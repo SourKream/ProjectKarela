@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  level: 1
+  type_name: MyString
+  action_user_types: 1
+  resolving_user_types: 1
+
+two:
+  level: 1
+  type_name: MyString
+  action_user_types: 1
+  resolving_user_types: 1

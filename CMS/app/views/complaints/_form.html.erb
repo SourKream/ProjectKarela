@@ -1,0 +1,49 @@
+<%= form_for(@complaint) do |f| %>
+  <% if @complaint.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@complaint.errors.count, "error") %> prohibited this complaint from being saved:</h2>
+
+      <ul>
+      <% @complaint.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :complaint_type_id %><br>
+    <%= f.number_field :complaint_type_id %>
+  </div>
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :details %><br>
+    <%= f.text_area :details %>
+  </div>
+  <div class="field">
+    <%= f.label :is_resolved %><br>
+    <%= f.check_box :is_resolved %>
+  </div>
+  <div class="field">
+    <%= f.label :group %><br>
+    <%= f.text_field :group %>
+  </div>
+  <div class="field">
+    <%= f.label :admin_users %><br>
+    <%= f.number_field :admin_users %>
+  </div>
+  <div class="field">
+    <%= f.label :action_users %><br>
+    <%= f.number_field :action_users %>
+  </div>
+  <div class="field">
+    <%= f.label :resolving_users %><br>
+    <%= f.number_field :resolving_users %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

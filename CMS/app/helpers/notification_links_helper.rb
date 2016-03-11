@@ -1,0 +1,2 @@
+module NotificationLinksHelper
+end

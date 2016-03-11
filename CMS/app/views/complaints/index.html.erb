@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Complaints</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Complaint type</th>
+      <th>Title</th>
+      <th>Details</th>
+      <th>Is resolved</th>
+      <th>Group</th>
+      <th>Admin users</th>
+      <th>Action users</th>
+      <th>Resolving users</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @complaints.each do |complaint| %>
+      <tr>
+        <td><%= complaint.complaint_type_id %></td>
+        <td><%= complaint.title %></td>
+        <td><%= complaint.details %></td>
+        <td><%= complaint.is_resolved %></td>
+        <td><%= complaint.group %></td>
+        <td><%= complaint.admin_users %></td>
+        <td><%= complaint.action_users %></td>
+        <td><%= complaint.resolving_users %></td>
+        <td><%= link_to 'Show', complaint %></td>
+        <td><%= link_to 'Edit', edit_complaint_path(complaint) %></td>
+        <td><%= link_to 'Destroy', complaint, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Complaint', new_complaint_path %>

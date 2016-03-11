@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Level:</strong>
+  <%= @complaint_type.level %>
+</p>
+
+<p>
+  <strong>Type name:</strong>
+  <%= @complaint_type.type_name %>
+</p>
+
+<p>
+  <strong>Action user types:</strong>
+  <%= @complaint_type.action_user_types %>
+</p>
+
+<p>
+  <strong>Resolving user types:</strong>
+  <%= @complaint_type.resolving_user_types %>
+</p>
+
+<%= link_to 'Edit', edit_complaint_type_path(@complaint_type) %> |
+<%= link_to 'Back', complaint_types_path %>

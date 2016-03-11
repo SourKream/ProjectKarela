@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Complaint Types</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Level</th>
+      <th>Type name</th>
+      <th>Action user types</th>
+      <th>Resolving user types</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @complaint_types.each do |complaint_type| %>
+      <tr>
+        <td><%= complaint_type.level %></td>
+        <td><%= complaint_type.type_name %></td>
+        <td><%= complaint_type.action_user_types %></td>
+        <td><%= complaint_type.resolving_user_types %></td>
+        <td><%= link_to 'Show', complaint_type %></td>
+        <td><%= link_to 'Edit', edit_complaint_type_path(complaint_type) %></td>
+        <td><%= link_to 'Destroy', complaint_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Complaint type', new_complaint_type_path %>

@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Complaint type:</strong>
+  <%= @complaint.complaint_type_id %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @complaint.title %>
+</p>
+
+<p>
+  <strong>Details:</strong>
+  <%= @complaint.details %>
+</p>
+
+<p>
+  <strong>Is resolved:</strong>
+  <%= @complaint.is_resolved %>
+</p>
+
+<p>
+  <strong>Group:</strong>
+  <%= @complaint.group %>
+</p>
+
+<p>
+  <strong>Admin users:</strong>
+  <%= @complaint.admin_users %>
+</p>
+
+<p>
+  <strong>Action users:</strong>
+  <%= @complaint.action_users %>
+</p>
+
+<p>
+  <strong>Resolving users:</strong>
+  <%= @complaint.resolving_users %>
+</p>
+
+<%= link_to 'Edit', edit_complaint_path(@complaint) %> |
+<%= link_to 'Back', complaints_path %>

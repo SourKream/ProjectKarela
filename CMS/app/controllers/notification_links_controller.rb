@@ -1,0 +1,2 @@
+class NotificationLinksController < ApplicationController
+end
