@@ -2,9 +2,10 @@
 
 <h1>Listing Complaint Types</h1>
 
-<table>
+<table border="1">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Level</th>
       <th>Type name</th>
       <th>Action user types</th>
@@ -16,10 +17,11 @@
   <tbody>
     <% @complaint_types.each do |complaint_type| %>
       <tr>
-        <td><%= complaint_type.level %></td>
+        <td><%= complaint_type.id %></td>
+        <td><%= complaint_type.level.capitalize %></td>
         <td><%= complaint_type.type_name %></td>
-        <td><%= complaint_type.action_user_types %></td>
-        <td><%= complaint_type.resolving_user_types %></td>
+        <td><% complaint_type.action_user_types.each do |user| %><%if user != nil%><%= @user_types.find(Integer(user)).type_name %><br> <% end %><% end %></td>
+        <td><% complaint_type.resolving_user_types.each do |user| %><%if user != nil%><%= @user_types.find(Integer(user)).type_name %><br> <% end %><% end %></td>
         <td><%= link_to 'Show', complaint_type %></td>
         <td><%= link_to 'Edit', edit_complaint_type_path(complaint_type) %></td>
         <td><%= link_to 'Destroy', complaint_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -31,3 +33,4 @@
 <br>
 
 <%= link_to 'New Complaint type', new_complaint_type_path %>
+<%= link_to 'Home', root_path %>

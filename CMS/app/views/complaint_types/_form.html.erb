@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :level %><br>
-    <%= f.number_field :level %>
+    <%= f.select :level, [['Personal','personal'],['Hostel','hostel'],['Institute','institute']] %>
   </div>
   <div class="field">
     <%= f.label :type_name %><br>
@@ -21,11 +21,11 @@
   </div>
   <div class="field">
     <%= f.label :action_user_types %><br>
-    <%= f.number_field :action_user_types %>
+    <%= f.collection_check_boxes(:action_user_types, UserType.all, :id, :type_name ) %>
   </div>
   <div class="field">
     <%= f.label :resolving_user_types %><br>
-    <%= f.number_field :resolving_user_types %>
+    <%= f.collection_check_boxes(:resolving_user_types, UserType.all, :id, :type_name ) %>
   </div>
   <div class="actions">
     <%= f.submit %>

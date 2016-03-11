@@ -17,7 +17,7 @@
   </div>
   <div class="field">
     <%= f.label :user_type_id %><br>
-    <%= f.number_field :user_type_id %>
+    <%= f.collection_select(:user_type_id, UserType.all, :id, :type_name ) %>
   </div>
   <div class="field">
     <%= f.label :contact_no %><br>
@@ -25,7 +25,7 @@
   </div>
   <div class="field">
     <%= f.label :group %><br>
-    <%= f.number_field :group %>
+    <%= f.select :group, [['Institute','institute'],['Aravali','aravali'],['Karakoram','karakoram'], ['Nilgiri', 'nilgiri']] %>
   </div>
   <div class="field">
     <%= f.label :login_username %><br>

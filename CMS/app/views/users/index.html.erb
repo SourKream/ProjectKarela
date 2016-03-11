@@ -2,7 +2,7 @@
 
 <h1>Listing Users</h1>
 
-<table>
+<table border="1">
   <thead>
     <tr>
       <th>Name</th>
@@ -18,10 +18,10 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.name %></td>
-        <td><%= user.user_type_id %></td>
+        <td><%= user.name.capitalize %></td>
+        <td><%= UserType.find(user.user_type_id).type_name %></td>
         <td><%= user.contact_no %></td>
-        <td><%= user.group %></td>
+        <td><%= user.group.capitalize %></td>
         <td><%= user.login_username %></td>
         <td><%= user.login_password %></td>
         <td><%= link_to 'Show', user %></td>
@@ -35,3 +35,4 @@
 <br>
 
 <%= link_to 'New User', new_user_path %>
+<%= link_to 'Home', root_path %>

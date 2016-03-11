@@ -4,7 +4,8 @@ class ComplaintTypesController < ApplicationController
   # GET /complaint_types
   # GET /complaint_types.json
   def index
-    @complaint_types = ComplaintType.all
+    @complaint_types = ComplaintType.all.order(:level, :id)
+    @user_types = UserType.all
   end
 
   # GET /complaint_types/1
@@ -28,7 +29,7 @@ class ComplaintTypesController < ApplicationController
 
     respond_to do |format|
       if @complaint_type.save
-        format.html { redirect_to @complaint_type, notice: 'Complaint type was successfully created.' }
+        format.html { redirect_to complaint_types_url, notice: 'Complaint type was successfully created.' }
         format.json { render :show, status: :created, location: @complaint_type }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class ComplaintTypesController < ApplicationController
   def update
     respond_to do |format|
       if @complaint_type.update(complaint_type_params)
-        format.html { redirect_to @complaint_type, notice: 'Complaint type was successfully updated.' }
+        format.html { redirect_to complaint_types_url, notice: 'Complaint type was successfully updated.' }
         format.json { render :show, status: :ok, location: @complaint_type }
       else
         format.html { render :edit }
@@ -69,6 +70,6 @@ class ComplaintTypesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def complaint_type_params
-      params.require(:complaint_type).permit(:level, :type_name, :action_user_types, :resolving_user_types)
+      params.require(:complaint_type).permit(:level, :type_name, {:action_user_types => []}, {:resolving_user_types => []})
     end
 end
