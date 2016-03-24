@@ -29,7 +29,13 @@
         <activity
             android:name=".ComplaintActivity"
             android:label="@string/title_activity_complaint"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NewComplaintActivity"
+            android:label="@string/title_activity_new_complaint"/>
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notification"/>
     </application>
 
 </manifest>
