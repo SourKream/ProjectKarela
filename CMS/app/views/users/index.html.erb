@@ -5,6 +5,7 @@
 <table border="1">
   <thead>
     <tr>
+	  <th>ID</th>
       <th>Name</th>
       <th>User type</th>
       <th>Contact no</th>
@@ -18,6 +19,7 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
+	 	<td><%= user.id %></td>
         <td><%= user.name.capitalize %></td>
         <td><%= UserType.find(user.user_type_id).type_name %></td>
         <td><%= user.contact_no %></td>

@@ -10,6 +10,11 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    if logged_in? and params[:id].to_i == current_user.id
+      @user = User.find(params[:id])
+    else
+      redirect_to login_path
+    end
   end
 
   # GET /users/new

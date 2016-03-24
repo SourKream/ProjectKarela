@@ -10,10 +10,12 @@
       </ul>
     </div>
   <% end %>
-
+  
   <div class="field">
     <%= f.label :complaint_type_id %><br>
-    <%= f.number_field :complaint_type_id %>
+    <!-- <%= f.number_field :complaint_type_id %> snair -->
+	<!-- TODO resolve how to show level -->
+	<%= f.collection_select(:complaint_type_id, ComplaintType.all, :id, :type_name) %>
   </div>
   <div class="field">
     <%= f.label :title %><br>
