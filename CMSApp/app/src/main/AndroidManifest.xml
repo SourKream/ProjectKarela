@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cop290.cmsapp">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,7 +24,13 @@
         <activity
             android:name=".ComplaintActivity"
             android:label="@string/title_activity_complaint"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NewComplaintActivity"
+            android:label="@string/title_activity_new_complaint"/>
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notification"/>
     </application>
 
 </manifest>
