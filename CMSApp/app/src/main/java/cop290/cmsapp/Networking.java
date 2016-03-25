@@ -6,25 +6,16 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.VolleyError;
 
+import java.util.HashMap;
+import java.util.Map;
+
 //TODO
 public class Networking {
 
-    private final static String urlBase = "http://192.168.0.7:8000";
+    private final static String urlBase = "http://10.0.2.2:3000";
 
     private final static String extensions[][] = {                                        //   optional inputs
-            new String[] {"/default/login.json?userid=","&password=",""},                 //0
-            new String[] {"/default/logout.json"},                                        //1
-            new String[] {"/courses/list.json"},                                          //2
-            new String[] {"/default/notifications.json"},                                 //3
-            new String[] {"/default/grades.json"},                                        //4
-            new String[] {"/courses/course.json/","/assignments"},                        //5- course code
-            new String[] {"/courses/assignment.json/",""},                                //6- assignment #
-            new String[] {"/courses/course.json/","/grades"},                             //7- course code
-            new String[] {"/courses/course.json/","/threads"},                            //8- course code
-            new String[] {"/threads/thread.json/",""},                                    //9- thread #
-            new String[] {"/threads/new.json?title=","&description=","&course_code=",""}, //10
-            new String[] {"/threads/post_comment.json?thread_id=","&description=",""},    //11
-            new String[] {"/users/user.json/",""}                                         //12
+            new String[] {"/login.json?"},                 //0
     };
 
     public interface VolleyCallback{
@@ -49,10 +40,34 @@ public class Networking {
             }
         },  new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-            }});
+            public void onErrorResponse(VolleyError error) {}
+        });
 
-//        MyApplication.mRequestQueue.add(stringRequest);
+        MyApplication.mRequestQueue.add(stringRequest);
     }
 
+    public static void postData(int extensionCode, final Map<String, String> postParams, final VolleyCallback callback){
+
+        String url = urlBase + extensions[extensionCode][0];
+
+        Log.d("URL SENT: ", url);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        callback.onSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }) {
+                    @Override
+                    protected Map<String,String> getParams(){
+                        return postParams;
+                    }
+        };
+
+        MyApplication.mRequestQueue.add(stringRequest);
+    }
 }
