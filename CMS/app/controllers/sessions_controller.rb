@@ -7,13 +7,17 @@ class SessionsController < ApplicationController
     user = User.find_by(login_username: params[:session][:login_username])
     # TODO
     if user && user.login_password == params[:session][:login_password]
-          # Log the user in and redirect to the user's show page.
-          log_in user
-          redirect_to user
+      log_in user
+      respond_to do |format|
+        format.html {redirect_to user}
+        format.json {render json: {"success" => 1, "user" => user}}
+      end
     else
-      #flash[:danger] = 'Invalid email/password combination' # Not quite right! --> return this
-      render 'new'
-    end
+      respond_to do |format|
+        format.html {render 'new'}
+        format.json {render json: {"success" => 0, "user" => {}}}
+      end
+    end    
   end
   
   def destroy
