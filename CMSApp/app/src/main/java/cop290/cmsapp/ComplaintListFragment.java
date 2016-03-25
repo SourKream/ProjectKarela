@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,6 @@ public class ComplaintListFragment extends Fragment {
 
     // List of courses to populate fragment
     private List<Complaint> complaintList = new ArrayList<>();
-    private ListView complaintListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,8 +34,9 @@ public class ComplaintListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_complaint_list, container, false);
 
         populateCourseList();
+
         // Initialise listview by setting adapter and item click listener
-        complaintListView = (ListView) view.findViewById(R.id.complaint_list);
+        ListView complaintListView = (ListView) view.findViewById(R.id.complaint_list);
         complaintListView.setAdapter(new ComplaintListAdapter(this.getActivity(), complaintList));
         complaintListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -53,7 +54,8 @@ public class ComplaintListFragment extends Fragment {
 
     public void populateCourseList(){
         // TODO
-
+//        complaintList.clear();
+        complaintList.add(new Complaint("{\"id\": 1, \"credits\": 2, \"name\": \"I made this complaint\", \"code\": \"Complaint Title\", \"description\": \"Yolo\", \"l_t_p\": \"2-1-2\"}"));
     }
 
     // Class to store details of a course
@@ -112,22 +114,19 @@ public class ComplaintListFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (inflater == null)
                 inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            if (convertView == null)
-//                convertView = inflater.inflate(R.layout.courses_list_item, null);
-/*
-            TextView courseCode = (TextView) convertView.findViewById(R.id.courseCode);
-            TextView courseName = (TextView) convertView.findViewById(R.id.courseName);
-            TextView LTP = (TextView) convertView.findViewById(R.id.ltp);
+            if (convertView == null)
+                convertView = inflater.inflate(R.layout.list_item_complaint, null);
 
-            Course course = courseList.get(position);
+            TextView complaintTitle = (TextView) convertView.findViewById(R.id.complaintTitle);
+            TextView complaintDate = (TextView) convertView.findViewById(R.id.complaintDate);
 
-            courseCode.setText(course.CourseCode.toUpperCase());
-            courseCode.setTypeface(MainActivity.MyriadPro);
-            courseName.setText(course.CourseName);
-            courseName.setTypeface(MainActivity.Garibaldi);
-            LTP.setText(String.format("(%s)",course.LTP));
-            LTP.setTypeface(MainActivity.MyriadPro);
-*/
+            Complaint complaint = complaintList.get(position);
+
+            complaintTitle.setText(complaint.CourseCode.toUpperCase());
+//            complaintTitle.setTypeface(MainActivity.MyriadPro);
+            complaintDate.setText(complaint.CourseName);
+//            complaintDate.setTypeface(MainActivity.Garibaldi);
+
             return convertView;
         }
     }
