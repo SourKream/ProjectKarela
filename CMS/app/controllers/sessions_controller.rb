@@ -22,6 +22,9 @@ class SessionsController < ApplicationController
   
   def destroy
     log_out
-    redirect_to login_path
+    respond_to do |format|
+      format.html {redirect_to login_path}
+      format.json {render json: {"success" => 1}}
+    end
   end
 end

@@ -16,8 +16,20 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
             tabLayout.getTabAt(2).setText("Institute");
         } catch (java.lang.NullPointerException e) {
             Log.d("Null Pointer: ",e.getMessage());
+        }
+
+        if (!((MyApplication) getApplication()).isUserLoggedIn()) {
+            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -119,8 +136,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (id == R.id.action_logout) {
-            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-            startActivity(intent);
+            ((MyApplication) getApplication()).setMyUser(null);
+            Networking.getRequest(1,new String[0], new Networking.VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
             return true;
         }
 

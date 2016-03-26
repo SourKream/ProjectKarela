@@ -3,8 +3,11 @@ package cop290.cmsapp;
 import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +17,9 @@ public class Networking {
 
     private final static String urlBase = "http://10.0.2.2:3000";
 
-    private final static String extensions[][] = {                                        //   optional inputs
-            new String[] {"/login.json?"},                 //0
+    private final static String extensions[][] = {
+            new String[] {"/login.json"},                 //0
+            new String[] {"/logout.json"}                 //1
     };
 
     public interface VolleyCallback{
@@ -23,7 +27,7 @@ public class Networking {
     }
 
     // provide list of courses, grades and notifs on login
-    public static void getData(int extensionCode, String[] optArgs, final VolleyCallback callback){
+    public static void getRequest(int extensionCode, String[] optArgs, final VolleyCallback callback){
 
         // construct appropriate url
         String url = urlBase + extensions[extensionCode][0];
@@ -46,7 +50,7 @@ public class Networking {
         MyApplication.mRequestQueue.add(stringRequest);
     }
 
-    public static void postData(int extensionCode, final Map<String, String> postParams, final VolleyCallback callback){
+    public static void postRequest(int extensionCode, final Map<String, String> postParams, final VolleyCallback callback){
 
         String url = urlBase + extensions[extensionCode][0];
 
@@ -69,5 +73,26 @@ public class Networking {
         };
 
         MyApplication.mRequestQueue.add(stringRequest);
+    }
+
+    public static void postRequest(int extensionCode, JSONObject postParams, final VolleyCallback callback){
+
+        String url = urlBase + extensions[extensionCode][0];
+
+        Log.d("URL SENT: ", url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postParams,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        callback.onSuccess(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        MyApplication.mRequestQueue.add(jsonObjectRequest);
     }
 }
