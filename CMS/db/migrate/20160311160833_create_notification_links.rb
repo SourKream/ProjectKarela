@@ -1,8 +1,8 @@
 class CreateNotificationLinks < ActiveRecord::Migration
   def change
     create_table :notification_links do |t|
-      t.integer :notification_id
-      t.integer :user_id
+      t.belongs_to :notification, index: true
+      t.belongs_to :user, index: true
       t.boolean :is_seen
 
       t.timestamps null: false

@@ -13,7 +13,7 @@ class ComplaintsController < ApplicationController
         @complaints = Complaint.all
       
       elsif user_type.downcase == "student"
-        # ASSUMPTION: Not loading those for which student is admin user => assuming those are included in hostel complaints
+        # loading those in which student is admin_user, or same hostel, or institute level
         @complaints = Complaint.where('? = ANY (admin_users) OR "group" = ? OR "group" = ?', *[current_user.id,current_user.group,"institute"])
         
       else
@@ -103,7 +103,7 @@ class ComplaintsController < ApplicationController
       set_action_users
       set_resolving_users  
       
-      # snair : added '=> []' in front of those which are arrays, else aren't being permitted          
+      # snair : added '=> []' in front of those that are arrays, else aren't being permitted          
       params.require(:complaint).permit(:complaint_type_id, :title, :details, :is_resolved, :group, :admin_users => [], :action_users => [], :resolving_users => [])
     end
 end

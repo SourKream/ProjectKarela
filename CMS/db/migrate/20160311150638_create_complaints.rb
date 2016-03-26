@@ -1,7 +1,7 @@
 class CreateComplaints < ActiveRecord::Migration
   def change
     create_table :complaints do |t|
-      t.integer :complaint_type_id
+      t.belongs_to :complaint_type, index: true
       t.string :title
       t.text :details
       t.boolean :is_resolved

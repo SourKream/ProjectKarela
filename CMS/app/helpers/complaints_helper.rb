@@ -7,15 +7,15 @@ module ComplaintsHelper
     if level == 1             # personal
       params[:complaint][:group] = current_user.id
     elsif level == 2          # hostel
-      params[:complaint][:group] = current_user.group         # TODO: to use [:group] (int) or .group (string)
+      params[:complaint][:group] = current_user.group         # TODO: to use [:group] (int) or .group (string) ?
     else
       params[:complaint][:group] = "institute"
     end
   end
   
   def set_action_users    #snair
-    # initialize
     # ASSUMPTION: student can not be action user
+    # initialize
     params[:complaint][:action_users] = []
     action_users_type = ComplaintType.find(params[:complaint][:complaint_type_id]).action_user_types
     level = ComplaintType.find(params[:complaint][:complaint_type_id])[:level]
