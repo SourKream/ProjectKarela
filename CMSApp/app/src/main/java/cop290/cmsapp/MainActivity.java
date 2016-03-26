@@ -24,14 +24,19 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import cop290.cmsapp.ComplaintListFragment.Complaint;
 
 public class MainActivity extends AppCompatActivity {
+
+    public List<Complaint> complaintList = new ArrayList<>();
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -67,19 +72,43 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Networking.getRequest(2, new String[0], new Networking.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    Log.d("Response",result);
+                    JSONArray response = new JSONArray(result);
+                    for(int i=0; i<response.length(); i++){
+                        complaintList.add(new Complaint(response.getString(i)));
+                        ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
+                    }
+                } catch (JSONException e) {
+                    Log.d("JsonException",e.getMessage());
+                }
+            }
+        });
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        Bundle bundle = new Bundle();
-//        bundle.putString("coursename", CourseTitle);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("group", "personal");
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("group", "hostel");
+        Bundle bundle3 = new Bundle();
+        bundle3.putString("group", "institute");
 
         Fragment personal_fragment = new ComplaintListFragment();
         Fragment hostel_fragment = new ComplaintListFragment();
         Fragment institute_fragment = new ComplaintListFragment();
 
-        personal_fragment.setArguments(bundle);
-        hostel_fragment.setArguments(bundle);
-        institute_fragment.setArguments(bundle);
+        personal_fragment.setArguments(bundle1);
+        hostel_fragment.setArguments(bundle2);
+        institute_fragment.setArguments(bundle3);
 
         adapter.addFragment(personal_fragment, "PERSONAL");
         adapter.addFragment(hostel_fragment, "HOSEL");
@@ -109,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
+        }
+
+        public void refreshFragments(){
+            for (int i=0; i<mFragmentList.size(); i++)
+                ((ComplaintListFragment) mFragmentList.get(i)).populateCourseList();
         }
 
         @Override

@@ -37,6 +37,7 @@ public class MyApplication extends Application{
     public void setMyUser (User user){
         MyUser = user;
     }
+    public User getMyUser() {return MyUser;}
 
     public static class User {
         int ID;

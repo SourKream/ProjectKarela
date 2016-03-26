@@ -27,16 +27,15 @@ public class ComplaintListFragment extends Fragment {
 
     // List of courses to populate fragment
     private List<Complaint> complaintList = new ArrayList<>();
+    private ListView complaintListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_complaint_list, container, false);
 
-        populateCourseList();
-
         // Initialise listview by setting adapter and item click listener
-        ListView complaintListView = (ListView) view.findViewById(R.id.complaint_list);
+        complaintListView = (ListView) view.findViewById(R.id.complaint_list);
         complaintListView.setAdapter(new ComplaintListAdapter(this.getActivity(), complaintList));
         complaintListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -44,8 +43,7 @@ public class ComplaintListFragment extends Fragment {
                 // Go to the specific course activity when the course item is clicked
                 // Pass coursecode in Intent to populate next activity with the required data
                 Intent intent = new Intent(getActivity(), ComplaintActivity.class);
-                // TODO: Correct argument
-                intent.putExtra("coursename", complaintList.get(position).CourseCode);
+                intent.putExtra("complaintID", complaintList.get(position).ID);
                 startActivity(intent);
             }
         });
@@ -53,31 +51,48 @@ public class ComplaintListFragment extends Fragment {
     }
 
     public void populateCourseList(){
-        // TODO
-//        complaintList.clear();
-        complaintList.add(new Complaint("{\"id\": 1, \"credits\": 2, \"name\": \"I made this complaint\", \"code\": \"Complaint Title\", \"description\": \"Yolo\", \"l_t_p\": \"2-1-2\"}"));
+        Bundle bundle = getArguments();
+        String group = bundle.getString("group");
+        MyApplication.User myUser = ((MyApplication) getActivity().getApplication()).getMyUser();
+        complaintList = ((MainActivity) getActivity()).complaintList;
+        if (complaintList!=null) {
+            if (group.equals("personal")) {
+                for (int i = 0; i < complaintList.size(); i++)
+                    if (!complaintList.get(i).Group.equals(Integer.toString(myUser.ID)))
+                        complaintList.remove(i);
+            }
+            else if (group.equals("hostel")) {
+                for (int i = 0; i < complaintList.size(); i++)
+                    if (!complaintList.get(i).Group.equals(myUser.Group))
+                        complaintList.remove(i);
+            }
+            else if (group.equals("institute")) {
+                for (int i = 0; i < complaintList.size(); i++)
+                    if (!complaintList.get(i).Group.equals("institute"))
+                        complaintList.remove(i);
+            }
+        }
+        ((ComplaintListAdapter) complaintListView.getAdapter()).notifyDataSetChanged();
+//        complaintList.add(new Complaint("{\"id\": 1, \"credits\": 2, \"name\": \"I made this complaint\", \"code\": \"Complaint Title\", \"description\": \"Yolo\", \"l_t_p\": \"2-1-2\"}"));
     }
 
     // Class to store details of a course
     public static class Complaint{
-        // TODO: Correct parameters
         int ID;
-        int Credits;
-        String CourseCode;
-        String CourseName;
-        String CourseDescription;
-        String LTP;
+        int ComplaintTypeID;
+        String Group;
+        String Title;
+        String Details;
 
         // Constructor parses JSON string and stores data in object
         public Complaint (String JsonString){
             try {
-                JSONObject course = new JSONObject(JsonString);
-                ID = course.getInt("id");
-                Credits = course.getInt("credits");
-                CourseName = course.getString("name");
-                CourseCode = course.getString("code");
-                CourseDescription = course.getString("description");
-                LTP = course.getString("l_t_p");
+                JSONObject complaint = new JSONObject(JsonString);
+                ID = complaint.getInt("id");
+                ComplaintTypeID = complaint.getInt("complaint_type_id");
+                Group = complaint.getString("group");
+                Title = complaint.getString("title");
+                Details = complaint.getString("details");
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }
@@ -97,7 +112,7 @@ public class ComplaintListFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return complaintList.size();
+            return (complaintList == null)?0:complaintList.size();
         }
 
         @Override
@@ -122,9 +137,9 @@ public class ComplaintListFragment extends Fragment {
 
             Complaint complaint = complaintList.get(position);
 
-            complaintTitle.setText(complaint.CourseCode.toUpperCase());
+            complaintTitle.setText(complaint.Title);
 //            complaintTitle.setTypeface(MainActivity.MyriadPro);
-            complaintDate.setText(complaint.CourseName);
+            complaintDate.setText(complaint.Details);
 //            complaintDate.setTypeface(MainActivity.Garibaldi);
 
             return convertView;

@@ -18,8 +18,10 @@ public class Networking {
     private final static String urlBase = "http://10.0.2.2:3000";
 
     private final static String extensions[][] = {
-            new String[] {"/login.json"},                 //0
-            new String[] {"/logout.json"}                 //1
+            new String[] {"/login.json"},                   //0
+            new String[] {"/logout.json"},                  //1
+            new String[] {"/complaints.json"},              //2
+            new String[] {"/complaint_types.json"}          //3
     };
 
     public interface VolleyCallback{
