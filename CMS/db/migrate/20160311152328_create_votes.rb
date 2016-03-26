@@ -1,8 +1,8 @@
 class CreateVotes < ActiveRecord::Migration
   def change
     create_table :votes do |t|
-      t.integer :complaint_id
-      t.integer :user_id
+      t.belongs_to :complaint, index: true
+      t.belongs_to :user, index: true
       t.integer :vote_type
       t.text :comment
 

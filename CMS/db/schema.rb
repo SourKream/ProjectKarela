@@ -46,6 +46,9 @@ ActiveRecord::Schema.define(version: 20160311160833) do
     t.datetime "updated_at",      null: false
   end
 
+  add_index "notification_links", ["notification_id"], name: "index_notification_links_on_notification_id", using: :btree
+  add_index "notification_links", ["user_id"], name: "index_notification_links_on_user_id", using: :btree
+
   create_table "notifications", force: :cascade do |t|
     t.integer  "complaint_id"
     t.text     "details"
