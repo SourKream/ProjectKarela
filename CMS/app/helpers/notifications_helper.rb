@@ -41,6 +41,6 @@ module NotificationsHelper
       admin_ids.each do |admin_id|
         NotificationLink.create(is_seen: false, notification_id: notif.id, user_id: admin_id)
       end  
-      
+    end      
   end
 end
