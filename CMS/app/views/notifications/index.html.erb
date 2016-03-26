@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Notification Links</h1>
+
+<table border="1">
+  <thead>
+    <tr>
+	  <th>Notif Link ID</th>
+      <th>User ID</th>
+      <th>Notif ID</th>
+      <th>Is Seen</th>
+      <th>Details</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @notification_links.each do |notification_link| %>
+      <tr>
+        <td><%= notification_link.id %></td>
+        <td><%= notification_link.user_id %></td>
+        <td><%= notification_link.notification_id %></td>
+        <td><%= notification_link.is_seen %></td>
+        <td><%= Notification.find(notification_link.notification_id).details %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'User Home',  current_user %>
