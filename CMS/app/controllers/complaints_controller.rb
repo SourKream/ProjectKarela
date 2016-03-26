@@ -51,6 +51,7 @@ class ComplaintsController < ApplicationController
       
       respond_to do |format|
         if @complaint.save
+          populate_notifications(params, "new")
           format.html { redirect_to @complaint, notice: 'Complaint was successfully created.' }
           format.json { render :show, status: :created, location: @complaint }
         else
@@ -70,6 +71,7 @@ class ComplaintsController < ApplicationController
   def update
     respond_to do |format|
       if @complaint.update(complaint_params)
+        populate_notifications(params, "edit")
         format.html { redirect_to @complaint, notice: 'Complaint was successfully updated.' }
         format.json { render :show, status: :ok, location: @complaint }
       else
