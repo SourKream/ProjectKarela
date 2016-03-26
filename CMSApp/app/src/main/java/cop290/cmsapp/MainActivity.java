@@ -35,7 +35,9 @@ import cop290.cmsapp.ComplaintListFragment.Complaint;
 
 public class MainActivity extends AppCompatActivity {
 
-    public List<Complaint> complaintList = new ArrayList<>();
+    public List<Complaint> complaintListPersonal = new ArrayList<>();
+    public List<Complaint> complaintListHostel = new ArrayList<>();
+    public List<Complaint> complaintListInstitute = new ArrayList<>();
     private ViewPager viewPager;
 
     @Override
@@ -81,9 +83,17 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Log.d("Response",result);
                     JSONArray response = new JSONArray(result);
+                    complaintListHostel.clear();
+                    complaintListInstitute.clear();
+                    complaintListPersonal.clear();
                     for(int i=0; i<response.length(); i++){
-                        complaintList.add(new Complaint(response.getString(i)));
-                        ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
+                        Complaint complaint = new Complaint(response.getString(i));
+                        if (complaint.Level.equals("personal"))
+                            complaintListPersonal.add(complaint);
+                        else if (complaint.Level.equals("hostel"))
+                            complaintListHostel.add(complaint);
+                        else if (complaint.Level.equals("institute"))
+                            complaintListInstitute.add(complaint);
                     }
                 } catch (JSONException e) {
                     Log.d("JsonException",e.getMessage());
@@ -138,11 +148,6 @@ public class MainActivity extends AppCompatActivity {
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
-        }
-
-        public void refreshFragments(){
-            for (int i=0; i<mFragmentList.size(); i++)
-                ((ComplaintListFragment) mFragmentList.get(i)).populateCourseList();
         }
 
         @Override

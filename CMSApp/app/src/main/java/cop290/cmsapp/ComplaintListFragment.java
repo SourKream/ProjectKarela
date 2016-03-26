@@ -36,7 +36,18 @@ public class ComplaintListFragment extends Fragment {
 
         // Initialise listview by setting adapter and item click listener
         complaintListView = (ListView) view.findViewById(R.id.complaint_list);
-        complaintListView.setAdapter(new ComplaintListAdapter(this.getActivity(), complaintList));
+
+        MainActivity MyActivity = (MainActivity) getActivity();
+        Bundle bundle = getArguments();
+        String group = bundle.getString("group");
+
+        if (group.equals("personal"))
+            complaintListView.setAdapter(new ComplaintListAdapter(this.getActivity(), MyActivity.complaintListPersonal));
+        else if (group.equals("hostel"))
+            complaintListView.setAdapter(new ComplaintListAdapter(this.getActivity(), MyActivity.complaintListHostel));
+        else if (group.equals("institute"))
+            complaintListView.setAdapter(new ComplaintListAdapter(this.getActivity(), MyActivity.complaintListInstitute));
+
         complaintListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -50,30 +61,9 @@ public class ComplaintListFragment extends Fragment {
         return view;
     }
 
-    public void populateCourseList(){
-        Bundle bundle = getArguments();
-        String group = bundle.getString("group");
-        MyApplication.User myUser = ((MyApplication) getActivity().getApplication()).getMyUser();
-        complaintList = ((MainActivity) getActivity()).complaintList;
-        if (complaintList!=null) {
-            if (group.equals("personal")) {
-                for (int i = 0; i < complaintList.size(); i++)
-                    if (!complaintList.get(i).Group.equals(Integer.toString(myUser.ID)))
-                        complaintList.remove(i);
-            }
-            else if (group.equals("hostel")) {
-                for (int i = 0; i < complaintList.size(); i++)
-                    if (!complaintList.get(i).Group.equals(myUser.Group))
-                        complaintList.remove(i);
-            }
-            else if (group.equals("institute")) {
-                for (int i = 0; i < complaintList.size(); i++)
-                    if (!complaintList.get(i).Group.equals("institute"))
-                        complaintList.remove(i);
-            }
-        }
-        ((ComplaintListAdapter) complaintListView.getAdapter()).notifyDataSetChanged();
-//        complaintList.add(new Complaint("{\"id\": 1, \"credits\": 2, \"name\": \"I made this complaint\", \"code\": \"Complaint Title\", \"description\": \"Yolo\", \"l_t_p\": \"2-1-2\"}"));
+    public void onResume(){
+        super.onResume();
+        ((ComplaintListAdapter)complaintListView.getAdapter()).notifyDataSetChanged();
     }
 
     // Class to store details of a course
@@ -83,6 +73,7 @@ public class ComplaintListFragment extends Fragment {
         String Group;
         String Title;
         String Details;
+        String Level;
 
         // Constructor parses JSON string and stores data in object
         public Complaint (String JsonString){
@@ -93,6 +84,7 @@ public class ComplaintListFragment extends Fragment {
                 Group = complaint.getString("group");
                 Title = complaint.getString("title");
                 Details = complaint.getString("details");
+                Level = complaint.getString("level");
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }
