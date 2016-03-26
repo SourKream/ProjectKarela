@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   resources :users
   root 'application#home'
   
-  get     'notifs'    => 'notification#index'
+  get     'notifs'    => 'notifications#index'
+  get     'notifs/:id/mark_seen'  => 'notification_links#mark_seen'
   #delete  'notifs/:id'=> 'notification#destroy'
   
   get     'login'   => 'sessions#new'
