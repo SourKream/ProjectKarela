@@ -57,6 +57,7 @@ module NotificationsHelper
     details     = "Complaint " + complaint.title + " marked as resolved by " + current_user.name
     
     # borrowed from above
+    # UNTESTED
     notif = Notification.create(complaint_id: complaint.id, details: details)
     receiver_ids = complaint[:admin_users] + complaint[:resolving_users] + complaint[:action_users]    # admin + resolving + action users
        
