@@ -17,6 +17,13 @@ Rails.application.routes.draw do
   get   'login'   => 'sessions#new'
   post  'login'   => 'sessions#create'
   get   'logout'  => 'sessions#destroy'
+
+  get     'viewvotes'                   => 'votes#index'
+  get     'complaints/:id/vote'         => 'votes#new' , as: :votes
+  post    'complaints/:id/vote'         => 'votes#create_vote'
+  post    'complaints/:id/comment'      => 'votes#create_comment'
+  delete  'complaints/:id/remove_vote'  => 'votes#delete_vote'
+  
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
