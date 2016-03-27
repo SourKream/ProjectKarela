@@ -67,7 +67,7 @@ class ComplaintsController < ApplicationController
       end
     end
   end
-
+#debugger
   # PATCH/PUT /complaints/1
   # PATCH/PUT /complaints/1.json
   def update
