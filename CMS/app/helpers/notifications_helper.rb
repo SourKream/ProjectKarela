@@ -1,5 +1,5 @@
 module NotificationsHelper
-  def populate_notifications(params, mode)
+  def populate_new_edit_notifications(params, mode)
     level = ComplaintType.find(params[:complaint][:complaint_type_id])[:level]
     
     # NORMAL notifications
@@ -48,5 +48,21 @@ module NotificationsHelper
         NotificationLink.create(is_seen: false, notification_id: notif.id, user_id: admin_id)
       end  
     end      
+  end
+  
+  def populate_resolved_notifications(id)
+    complaint   = Complaint.find(id)
+    level       = ComplaintType.find(complaint.complaint_type_id)[:level]
+    first_admin = User.find(complaint[:admin_users][0])
+    details     = "Complaint " + complaint.title + " marked as resolved by " + current_user.name
+    
+    # borrowed from above
+    notif = Notification.create(complaint_id: complaint.id, details: details)
+    receiver_ids = complaint[:admin_users] + complaint[:resolving_users] + complaint[:action_users]    # admin + resolving + action users
+       
+    receiver_ids.delete(current_user.id)  # don't notify the user who's resolving it, duh
+    receiver_ids.each do |receiver_id|
+      NotificationLink.create(is_seen: false, notification_id: notif.id, user_id: receiver_id)
+    end    
   end
 end

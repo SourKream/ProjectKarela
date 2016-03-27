@@ -7,13 +7,15 @@ Rails.application.routes.draw do
   resources :users
   root 'application#home'
   
-  get     'notifs'    => 'notifications#index'
+  get     'notifs'               => 'notifications#index'
   get     'notifs/:id/mark_seen' => 'notification_links#mark_seen'
   #delete  'notifs/:id'=> 'notification#destroy'
   
-  get     'login'   => 'sessions#new'
-  post    'login'   => 'sessions#create'
-  get  'logout'  => 'sessions#destroy'
+  get 'complaints/:id/mark_resolved' => 'complaints#mark_resolved'
+  
+  get   'login'   => 'sessions#new'
+  post  'login'   => 'sessions#create'
+  get   'logout'  => 'sessions#destroy'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

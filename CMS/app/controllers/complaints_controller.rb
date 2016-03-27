@@ -51,7 +51,7 @@ class ComplaintsController < ApplicationController
       
       respond_to do |format|
         if @complaint.save
-          populate_notifications(params, "new")
+          populate_new_edit_notifications(params, "new")
           format.html { redirect_to @complaint, notice: 'Complaint was successfully created.' }
           format.json { render :show, status: :created, location: @complaint }
         else
@@ -71,7 +71,7 @@ class ComplaintsController < ApplicationController
   def update
     respond_to do |format|
       if @complaint.update(complaint_params)
-        populate_notifications(params, "edit")
+        populate_new_edit_notifications(params, "edit")
         format.html { redirect_to @complaint, notice: 'Complaint was successfully updated.' }
         format.json { render :show, status: :ok, location: @complaint }
       else
@@ -90,6 +90,25 @@ class ComplaintsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  # GET /complaints/1/mark_resolved
+  # GET /complaints/1/mark_resolved.json
+  def mark_resolved
+    if logged_in? and (Complaint.find(params[:id].to_i).resolving_users.include? current_user.id)
+      Complaint.find(params[:id].to_i).update(is_resolved: true)
+      populate_resolved_notifications(params[:id].to_i)
+      respond_to do |format|
+        format.html {redirect_to complaints_path}
+        format.json {render json: {"success" => 1, "user" => user}}
+      end
+    else
+      respond_to do |format|
+        format.html {redirect_to login_path}
+        format.json {render json: {"success" => 0, "user" => user}}
+      end
+    end
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
