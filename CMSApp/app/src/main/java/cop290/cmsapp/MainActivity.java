@@ -16,21 +16,11 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import cop290.cmsapp.ComplaintListFragment.Complaint;
 
 public class MainActivity extends AppCompatActivity {
@@ -95,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         else if (complaint.Level.equals("institute"))
                             complaintListInstitute.add(complaint);
                     }
+                    ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
                 } catch (JSONException e) {
                     Log.d("JsonException",e.getMessage());
                 }
@@ -148,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
+        }
+
+        public void refreshFragments(){
+            for (int i=0; i<getCount(); i++){
+                if (mFragmentList.get(i).getActivity()!=null){
+                    ((ComplaintListFragment.ComplaintListAdapter) ((ComplaintListFragment) mFragmentList.get(i)).complaintListView.getAdapter()).notifyDataSetChanged();
+                }
+            }
         }
 
         @Override
