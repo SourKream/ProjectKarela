@@ -12,8 +12,30 @@ class NotificationsController < ApplicationController
       end
       
     else
-      redirect_to login_path
-      # TODO json message
+      respond_to do |format|
+        format.html {redirect_to login_path}
+        format.json {render json: {"success" => 0, "user" => user}}
+      end
     end
   end
+  
+  def clear_all
+    if logged_in?
+      current_user.notification_links.each do |nl|
+        nl.destroy
+      end
+      
+      respond_to do |format|
+        format.html {redirect_to notifs_path}
+        format.json {render json: {"success" => 1, "user" => user}}
+      end
+      
+    else
+      respond_to do |format|
+        format.html {redirect_to login_path}
+        format.json {render json: {"success" => 0, "user" => user}}
+      end
+    end
+  end
+  
 end

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   
   get     'notifs'               => 'notifications#index'
   get     'notifs/:id/mark_seen' => 'notification_links#mark_seen'
+  get     'notifs/clear_all'     => 'notifications#clear_all'
   #delete  'notifs/:id'=> 'notification#destroy'
   
   get 'complaints/:id/mark_resolved' => 'complaints#mark_resolved'
