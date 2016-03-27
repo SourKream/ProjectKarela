@@ -5,6 +5,7 @@
 <table border="1">
   <thead>
     <tr>
+      <th>Complaint ID</th>
       <th>Complaint type</th>
       <th>Title</th>
       <th>Details</th>
@@ -20,6 +21,7 @@
   <tbody>
     <% @complaints.each do |complaint| %>
       <tr>
+		<td><%= complaint.id %></td>
         <td><%= complaint.complaint_type_id %></td>
         <td><%= complaint.title %></td>
         <td><%= complaint.details %></td>
