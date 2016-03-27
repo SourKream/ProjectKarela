@@ -22,7 +22,9 @@ public class Networking {
             new String[] {"/logout.json"},                  //1
             new String[] {"/complaints.json"},              //2
             new String[] {"/complaint_types.json"},         //3
-            new String[] {"/notifs.json"}                   //4
+            new String[] {"/notifs.json"},                  //4
+            new String[] {"/users/", ".json"},              //5
+            new String[] {"/users.json"}                    //6
     };
 
     public interface VolleyCallback{

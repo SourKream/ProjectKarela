@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(String result) {
                 showProgress(false);
                 try {
+                    Log.d("LOGIN SUCCESS",result);
                     JSONObject response = new JSONObject(result);
                     if (response.getInt("success") == 1) {
                         ((MyApplication) getApplication()).setMyUser(new User(response.getString("user")));
@@ -155,6 +156,13 @@ public class LoginActivity extends AppCompatActivity {
     private void successfulLogin(){
         Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
         finish();
+        String args[] = {Integer.toString(((MyApplication) getApplication()).getMyUser().ID)};
+        Networking.getRequest(5, args, new Networking.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                ((MyApplication) getApplication()).setMyUser(new User(result));
+            }
+        });
     }
 
     /**
