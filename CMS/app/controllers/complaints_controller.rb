@@ -61,8 +61,10 @@ class ComplaintsController < ApplicationController
       end
     
     else
-      redirect_to login_path
-      # TODO json message
+      respond_to do |format|
+        format.html {redirect_to login_path}
+        format.json {render json: {"success" => 0, "user" => user}}
+      end
     end
   end
 
