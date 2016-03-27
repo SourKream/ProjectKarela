@@ -4,7 +4,13 @@ module NotificationsHelper
     
     # NORMAL notifications
     if mode == "new"
-      details = "New complaint posted in group " + @complaint.group.to_s + " by " + current_user.name
+      if level == 1
+        details = "New personal complaint posted by " + current_user.name
+      elsif level == 2
+        details = "New complaint posted in group " + @complaint.group.to_s + " by " + current_user.name
+      else
+        details = "New institute level complaint posted by " + current_user.name
+      end
     elsif mode == "edit"
       details = "Complaint " + @complaint.title + " edited by " + current_user.name
     end
@@ -25,7 +31,7 @@ module NotificationsHelper
       receiver_ids = (UserType.find(current_user.user_type).users.pluck(:id) + res_act).uniq
     end
     
-    receiver_ids.delete(current_user.id)  # don't notify the user who's posting/editing it duh
+    receiver_ids.delete(current_user.id)  # don't notify the user who's posting/editing it, duh
     receiver_ids.each do |receiver_id|
       NotificationLink.create(is_seen: false, notification_id: notif.id, user_id: receiver_id)
     end    

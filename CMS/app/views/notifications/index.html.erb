@@ -8,6 +8,7 @@
 	  <th>Notif Link ID</th>
       <th>User ID</th>
       <th>Notif ID</th>
+	  <th>Complaint ID</th>
       <th>Is Seen</th>
       <th>Details</th>
       <th colspan="3"></th>
@@ -20,6 +21,7 @@
         <td><%= notification_link.id %></td>
         <td><%= notification_link.user_id %></td>
         <td><%= notification_link.notification_id %></td>
+		<td><%= Notification.find(notification_link.notification_id).complaint_id%>
         <td><%= notification_link.is_seen %></td>
         <td><%= Notification.find(notification_link.notification_id).details %></td>
       </tr>
