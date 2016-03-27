@@ -26,8 +26,7 @@ import java.util.List;
 public class ComplaintListFragment extends Fragment {
 
     // List of courses to populate fragment
-    private List<Complaint> complaintList = new ArrayList<>();
-    private ListView complaintListView;
+    public ListView complaintListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,16 +53,11 @@ public class ComplaintListFragment extends Fragment {
                 // Go to the specific course activity when the course item is clicked
                 // Pass coursecode in Intent to populate next activity with the required data
                 Intent intent = new Intent(getActivity(), ComplaintActivity.class);
-                intent.putExtra("complaintID", complaintList.get(position).ID);
+//                intent.putExtra("complaintID", complaintList.get(position).ID);
                 startActivity(intent);
             }
         });
         return view;
-    }
-
-    public void onResume(){
-        super.onResume();
-        ((ComplaintListAdapter)complaintListView.getAdapter()).notifyDataSetChanged();
     }
 
     // Class to store details of a course
