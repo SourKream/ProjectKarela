@@ -41,5 +41,6 @@
 </p>
 
 <%= link_to 'Edit', edit_complaint_path(@complaint) %> |
-<%= link_to 'Vote', votes_path(:complaint => @complaint.id) %>
+<%= link_to 'Vote', votes_path(@complaint) %>|
+<%= link_to 'Comment', comments_path(@complaint) %>|
 <%= link_to 'Back', complaints_path %>
