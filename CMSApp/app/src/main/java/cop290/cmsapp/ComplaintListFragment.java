@@ -134,14 +134,16 @@ public class ComplaintListFragment extends Fragment {
                 convertView = inflater.inflate(R.layout.list_item_complaint, null);
 
             TextView complaintTitle = (TextView) convertView.findViewById(R.id.complaintTitle);
-            TextView complaintDate = (TextView) convertView.findViewById(R.id.complaintDate);
+            TextView complaintDate  = (TextView) convertView.findViewById(R.id.complaintDate);
+            TextView complaintSNo   = (TextView) convertView.findViewById(R.id.SNo);
 
             Complaint complaint = complaintList.get(position);
 
+            complaintSNo.setText(String.format("%d",position+1));
             complaintTitle.setText(complaint.Title);
-//            complaintTitle.setTypeface(MainActivity.MyriadPro);
+            complaintTitle.setTypeface(MainActivity.MyriadPro);
             complaintDate.setText(complaint.Details);
-//            complaintDate.setTypeface(MainActivity.Garibaldi);
+            complaintDate.setTypeface(MainActivity.Garibaldi);
 
             return convertView;
         }

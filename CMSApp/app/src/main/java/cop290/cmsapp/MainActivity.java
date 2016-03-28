@@ -1,6 +1,7 @@
 package cop290.cmsapp;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     public List<Complaint> complaintListPersonal = new ArrayList<>();
     public List<Complaint> complaintListHostel = new ArrayList<>();
     public List<Complaint> complaintListInstitute = new ArrayList<>();
+    public static Typeface Garibaldi;
+    public static Typeface MyriadPro;
     private ViewPager viewPager;
     private FloatingActionButton fab;
 
@@ -37,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Fonts
+        Garibaldi = Typeface.createFromAsset(getAssets(), "fonts/Garibaldi.ttf");
+        MyriadPro = Typeface.createFromAsset(getAssets(), "fonts/MyriadPro.ttf");
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
