@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                             complaintListInstitute.add(complaint);
                     }
                     ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
+                    //TODO FIX THIS
                     if (((MyApplication) getApplication()).isUserLoggedIn())
                         if (!((MyApplication) getApplication()).getMyUser().UserTypeName.equals("student"))
                             fab.setVisibility(View.GONE);

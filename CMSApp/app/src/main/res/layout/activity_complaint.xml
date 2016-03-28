@@ -34,13 +34,13 @@
 
     <include layout="@layout/content_complaint" />
 
-    <android.support.design.widget.FloatingActionButton
+<!--    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_thumbs_up_down_white_24dp"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end" /> -->
 
 </android.support.design.widget.CoordinatorLayout>
