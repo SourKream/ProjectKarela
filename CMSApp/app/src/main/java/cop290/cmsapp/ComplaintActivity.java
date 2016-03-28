@@ -71,7 +71,12 @@ public class ComplaintActivity extends AppCompatActivity {
             public void onClick(View v) {
                 NewCommentView.setVisibility(View.GONE);
                 MyCommentView.setVisibility(View.VISIBLE);
-                MyComment = new Comment(NewCommentEditText.getText().toString(),((MyApplication) getApplication()).getMyUser().Name);
+                if (MyComment==null)
+                    MyComment = new Comment(NewCommentEditText.getText().toString(),((MyApplication) getApplication()).getMyUser().Name);
+                else {
+                    MyComment.comment = NewCommentEditText.getText().toString();
+                    MyComment.setCommenterName("You");
+                }
                 MyNameView.setText(MyComment.commenterName);
                 MyCommentTextView.setText(MyComment.comment);
 
@@ -118,6 +123,7 @@ public class ComplaintActivity extends AppCompatActivity {
                         complaint.Upvotes = complaint.Upvotes + 1;
                     }
                     updateVotesDisplayed();
+                    sendVoteToServer();
                 }
             }
         });
@@ -139,9 +145,27 @@ public class ComplaintActivity extends AppCompatActivity {
                         complaint.Downvotes = complaint.Downvotes + 1;
                     }
                     updateVotesDisplayed();
+                    sendVoteToServer();
                 }
             }
         });
+    }
+
+    private void sendVoteToServer(){
+        JSONObject args1 = new JSONObject();
+        try {
+            args1 = new JSONObject("{vote: {vote_type: " + MyComment.VoteType + "}}");
+        } catch (JSONException e) {
+            Log.d("JSON Exception : ", e.getMessage());
+        }
+        String args2[] = {Integer.toString(complaint.ID)};
+        Networking.postRequest(9, args2, args1, new Networking.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                Toast.makeText(getBaseContext(), "Vote Updated", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void updateVotesDisplayed(){
@@ -160,17 +184,25 @@ public class ComplaintActivity extends AppCompatActivity {
                     Integer MyUserID = ((MyApplication) getApplication()).getMyUser().ID;
                     JSONObject response = new JSONObject(result);
                     JSONArray commentsJSON = response.getJSONArray("comments");
+                    JSONArray commentersJSON = response.getJSONArray("commenter_names");
                     for (int i = 0; i < commentsJSON.length(); i++) {
                         Comment comment = new Comment(commentsJSON.getString(i));
+                        comment.setCommenterName(commentersJSON.getString(i));
                         if (comment.userID != MyUserID)
                             commentList.add(comment);
-                        else
+                        else {
                             MyComment = comment;
+                            MyComment.setCommenterName("You");
+                        }
+                    }
+                    JSONArray MyCommentJson = response.getJSONArray("user_activity");
+                    if (MyCommentJson.length() > 0){
+                        MyComment = new Comment(MyCommentJson.getString(0));
+                        MyComment.setCommenterName("You");
                     }
                 } catch (JSONException e){
                     Log.d("JSON Exception : ", e.getMessage());
                 }
-
                 displayComplaint();
             }
         });
@@ -191,7 +223,7 @@ public class ComplaintActivity extends AppCompatActivity {
 
         updateVotesDisplayed();
 
-        if ((MyComment == null)||(MyComment.comment == null)||(MyComment.comment.equals(""))){
+        if ((MyComment == null)||(MyComment.comment == null)||(MyComment.comment.equals(""))||(MyComment.comment.equals("null"))){
             NewCommentView.setVisibility(View.VISIBLE);
             MyCommentView.setVisibility(View.GONE);
         } else {
@@ -234,9 +266,14 @@ public class ComplaintActivity extends AppCompatActivity {
                 JSONObject commentJson = new JSONObject(JsonString);
                 comment = commentJson.getString("comment");
                 userID = commentJson.getInt("user_id");
+                VoteType = commentJson.getInt("vote_type");
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }
+        }
+
+        public void setCommenterName (String commenter){
+            commenterName = commenter;
         }
     }
 
