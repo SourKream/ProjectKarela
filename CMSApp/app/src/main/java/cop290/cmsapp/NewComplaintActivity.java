@@ -1,5 +1,6 @@
 package cop290.cmsapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.ArrayMap;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import cop290.cmsapp.ComplaintListFragment.Complaint;
 
 public class NewComplaintActivity extends AppCompatActivity {
 
@@ -29,11 +31,16 @@ public class NewComplaintActivity extends AppCompatActivity {
     private List<String> categoryList = new ArrayList<>();
     private List<String> studentNames = new ArrayList<>();
     private Map<String, Integer> studentIDs = new HashMap<>();
+    private Map<Integer, String> reverseStudentIDs = new HashMap<>();
 
     private Spinner levelSpinner;
     private Spinner categorySpinner;
 
     private MultiAutoCompleteTextView AdminUsersTextView;
+
+    // For Edit Mode
+    private Boolean EditMode;
+    private Complaint complaint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +94,23 @@ public class NewComplaintActivity extends AppCompatActivity {
                     jsonObject = new JSONObject();
                     Log.d("JsonException", e.getMessage());
                 }
-                Networking.postRequest(2, jsonObject, new Networking.VolleyCallback() {
-                    @Override
-                    public void onSuccess(String result) {
-                        complaintPosted();
-                    }
-                });
+
+                if (!EditMode)
+                    Networking.postRequest(2, jsonObject, new Networking.VolleyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            complaintPosted();
+                        }
+                    });
+                else {
+                    String args[] = {Integer.toString(complaint.ID)};
+                    Networking.putRequest(7, args, jsonObject, new Networking.VolleyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            complaintUpdated();
+                        }
+                    });
+                }
             }
         });
 
@@ -103,6 +121,46 @@ public class NewComplaintActivity extends AppCompatActivity {
         AdminUsersTextView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, studentNames));
 
         loadStudentUsers();
+
+        Intent intent = getIntent();
+        EditMode = intent.getBooleanExtra("EditMode", false);
+        if (EditMode){
+            Integer complaintID = intent.getIntExtra("ComplaintID", 0);
+            String args[] = {Integer.toString(complaintID)};
+            Networking.getRequest(7, args, new Networking.VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    complaint = new Complaint(result);
+                    ComplaintType currentComplaintType = new ComplaintType("");
+                    for (int i=0; i<complaintTypes.size(); i++)
+                        if (complaintTypes.get(i).ID == complaint.ComplaintTypeID)
+                            currentComplaintType = complaintTypes.get(i);
+
+                    if (currentComplaintType.Level.equals("personal"))
+                        levelSpinner.setSelection(0);
+                    else if (currentComplaintType.Level.equals("hostel"))
+                        levelSpinner.setSelection(1);
+                    else
+                        levelSpinner.setSelection(2);
+
+                    setCategoryList();
+                    categorySpinner.setSelection(categoryList.indexOf(currentComplaintType.Category));
+
+                    ((EditText) findViewById(R.id.complaint_title)).setText(complaint.Title);
+                    ((EditText) findViewById(R.id.complaint_details)).setText(complaint.Details);
+
+                    String AdminUsers = "";
+                    Integer MyID = ((MyApplication) getApplication()).getMyUser().ID;
+                    for (int i=0; i<complaint.AdminUsers.size(); i++)
+                        if (complaint.AdminUsers.get(i) != MyID) {
+                            AdminUsers = AdminUsers.concat(reverseStudentIDs.get(complaint.AdminUsers.get(i)));
+                            AdminUsers = AdminUsers.concat(", ");
+                        }
+                    AdminUsersTextView.setText(AdminUsers);
+
+                }
+            });
+        }
     }
 
     private void loadStudentUsers(){
@@ -112,12 +170,14 @@ public class NewComplaintActivity extends AppCompatActivity {
                 try {
                     studentIDs.clear();
                     studentNames.clear();
+                    reverseStudentIDs.clear();
                     JSONArray response = new JSONArray(result);
                     for (int i=0; i<response.length(); i++){
                         JSONObject user = response.getJSONObject(i);
                         if (user.getInt("user_type_id") == 2) {
                             studentNames.add(user.getString("name"));
                             studentIDs.put(user.getString("name"), user.getInt("id"));
+                            reverseStudentIDs.put(user.getInt("id"), user.getString("name"));
                         }
                     }
                     ((ArrayAdapter) AdminUsersTextView.getAdapter()).notifyDataSetChanged();
@@ -131,6 +191,14 @@ public class NewComplaintActivity extends AppCompatActivity {
     private void complaintPosted(){
         Toast.makeText(this, "Complaint Posted", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    private void complaintUpdated(){
+        Toast.makeText(this, "Complaint Updated", Toast.LENGTH_SHORT).show();
+        finish();
+        Intent intent = new Intent(this, ComplaintActivity.class);
+        intent.putExtra("ComplaintID", complaint.ID);
+        startActivity(intent);
     }
 
     private void getAllComplaintType(){

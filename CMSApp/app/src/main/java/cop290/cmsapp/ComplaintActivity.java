@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,12 +107,28 @@ public class ComplaintActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.numUpvotes)).setText(Integer.toString(complaint.Upvotes));
         ((TextView) findViewById(R.id.numDownvotes)).setText(Integer.toString(complaint.Downvotes));
 
-        if ((MyComment == null)||(MyComment!=null && MyComment.comment == null)){
+        if ((MyComment == null)||(MyComment.comment == null)){
             NewCommentView.setVisibility(View.VISIBLE);
         } else {
             MyCommentView.setVisibility(View.VISIBLE);
             MyNameView.setText(MyComment.commenterName);
             MyCommentTextView.setText(MyComment.comment);
+        }
+
+        Integer MyUserID = ((MyApplication) getApplication()).getMyUser().ID;
+        if (complaint.AdminUsers.contains(MyUserID)){
+            TextView EditComplaintButton = (TextView) findViewById(R.id.EditComplaintButton);
+            EditComplaintButton.setVisibility(View.VISIBLE);
+            EditComplaintButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    Intent intent = new Intent(getBaseContext(), NewComplaintActivity.class);
+                    intent.putExtra("EditMode", true);
+                    intent.putExtra("ComplaintID", complaint.ID);
+                    startActivity(intent);
+                }
+            });
         }
     }
 

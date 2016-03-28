@@ -25,7 +25,8 @@ public class Networking {
             new String[] {"/notifs.json"},                  //4
             new String[] {"/users/", ".json"},              //5
             new String[] {"/users.json"},                   //6
-            new String[] {"/complaints/",".json"}           //7
+            new String[] {"/complaints/",".json"},          //7
+            new String[] {""}                               //8
     };
 
     public interface VolleyCallback{
@@ -87,6 +88,31 @@ public class Networking {
 
         Log.d("URL SENT: ", url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postParams,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        callback.onSuccess(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        MyApplication.mRequestQueue.add(jsonObjectRequest);
+    }
+
+    public static void putRequest(int extensionCode, String[] optArgs, JSONObject postParams, final VolleyCallback callback){
+
+        String url = urlBase + extensions[extensionCode][0];
+
+        for (int i=0; i<optArgs.length; i++){
+            url = url + optArgs[i] + extensions[extensionCode][i+1];
+        }
+
+        Log.d("URL SENT: ", url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, postParams,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
