@@ -40,7 +40,7 @@ module NotificationsHelper
     # send 'you are admin of this' notification to admins on creation
     # UNTESTED
     if mode == "new" and (level==2 or level ==3) and params[:complaint][:admin_users].length>1
-      admin_ids = params[:complaint][:admin_users].delete(current_user.id)
+      admin_ids = params[:complaint][:admin_users] - [current_user.id]
       details = "You are admin of " + @complaint.title + " posted by " + current_user.name + " in group " + @complaint.group.to_s
       
       notif = Notification.create(complaint_id: @complaint.id, details: details)

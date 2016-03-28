@@ -67,7 +67,7 @@ class ComplaintsController < ApplicationController
       end
     end
   end
-
+#debugger
   # PATCH/PUT /complaints/1
   # PATCH/PUT /complaints/1.json
   def update
@@ -121,13 +121,13 @@ class ComplaintsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     # auto-filling missing fields
     def complaint_params  
-      
       # setting missing fields
       add_current_user_to_admin_users    
       set_complaint_group
       set_action_users
       set_resolving_users  
       
+      params[:complaint][:is_resolved] = false
       # snair : added '=> []' in front of those that are arrays, else aren't being permitted          
       params.require(:complaint).permit(:complaint_type_id, :title, :details, :is_resolved, :group, :admin_users => [], :action_users => [], :resolving_users => [])
     end

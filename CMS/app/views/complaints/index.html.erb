@@ -31,7 +31,7 @@
         <td><%= complaint.action_users %></td>
         <td><%= complaint.resolving_users %></td>
         <td><%= link_to 'Show', complaint %></td>
-        <td><%= link_to 'Edit', edit_complaint_path(complaint) %></td>
+        <td><%= link_to 'Edit', edit_complaint_path(complaint)  %></td>
         <td><%= link_to 'Destroy', complaint, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
