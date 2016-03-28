@@ -52,7 +52,6 @@ module NotificationsHelper
   
   def populate_resolved_notifications(id)
     complaint   = Complaint.find(id)
-    level       = ComplaintType.find(complaint.complaint_type_id)[:level]
     first_admin = User.find(complaint[:admin_users][0])
     details     = "Complaint " + complaint.title + " marked as resolved by " + current_user.name
     
@@ -66,4 +65,19 @@ module NotificationsHelper
       NotificationLink.create(is_seen: false, notification_id: notif.id, user_id: receiver_id)
     end    
   end
+
+  def populate_poke_notifications(id)
+    complaint   = Complaint.find(id)
+    details     = "Complaint: " + complaint.title + " is pending "
+
+    # borrowed from above
+    # UNTESTED
+    notif = Notification.create(complaint_id: complaint.id, details: details)
+    receiver_ids = complaint[:action_users]    #action users
+       
+    receiver_ids.each do |receiver_id|
+      NotificationLink.create(is_seen: false, notification_id: notif.id, user_id: receiver_id)
+    end   
+  end
+
 end
