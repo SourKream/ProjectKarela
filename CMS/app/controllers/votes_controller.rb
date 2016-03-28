@@ -32,31 +32,32 @@ class VotesController < ApplicationController
 				@vote = Vote.new(vote_params)
 				respond_to do |format|
 				    if @vote.save
-				       format.html { redirect_to complaint_path, notice: 'Successfully Voted' }
-				       format.json { render :show, status: :created, location: @vote }
+				      format.html { redirect_to complaint_path, notice: 'Successfully Voted' }
+				      format.json { render :show, status: :created, location: @vote }
 				    else
-				       format.html { render :new }
-				       format.json { render json: @vote.errors, status: :unprocessable_entity }
+				      format.html { render :new }
+				      format.json { render json: @vote.errors, status: :unprocessable_entity }
 				    end
 			    end	
 			else
-		        respond_to do |format|
-		      	    if @vote.update_attributes(vote_params)
-				       format.html { redirect_to complaint_path, notice: 'Vote was successfully updated.' }
-				       format.json { render json: {"success": 1}}
-				    else
-				       format.html { render :edit }
-				       format.json { render json: @vote.errors, status: :unprocessable_entity }
-				    end
-			    end
-	     	end
-		else
 		    respond_to do |format|
-		       format.html {redirect_to login_path}
-		       format.json {render json: {"success" => 0, "user" => user}}
-	        end
+		      if @vote.update_attributes(vote_params)
+		        format.html { redirect_to complaint_path, notice: 'Vote was successfully updated.' }
+		        format.json { render :show, status: :ok, location: @vote }
+		      else
+		        format.html { render :edit }
+		        format.json { render json: @vote.errors, status: :unprocessable_entity }
+		      end
+			  end
 	    end
-  	end
+      
+		else
+	    respond_to do |format|
+		    format.html {redirect_to login_path}
+		    format.json {render json: {"success" => 0, "user" => user}}
+	    end
+	  end
+  end
 
 #POST /complaint/1/comment
 #POST /complaint/1/comment.json
@@ -68,20 +69,20 @@ class VotesController < ApplicationController
 				respond_to do |format|
 				    if @vote.save
 				       format.html { redirect_to complaint_path, notice: 'Successfully Voted' }
-				       format.json { render :show, status: :created, location: @vote }
+				       format.json {render json: {"success" => 1}}
 				    else
 				       format.html { render :new }
-				       format.json { render json: @vote.errors, status: :unprocessable_entity }
+				       format.json {render json: {"success" => 0}}
 				    end
 			    end	
 			else
 		        respond_to do |format|
 		      	    if @vote.update_attributes(comment_params)
 				       format.html { redirect_to complaint_path, notice: 'Vote was successfully updated.' }
-				       format.json { render json: {"success": 1}}
+				       format.json {render json: {"success" => 1}}
 				    else
 				       format.html { render :edit }
-				       format.json { render json: @vote.errors, status: :unprocessable_entity }
+				       format.json {render json: {"success" => 0}}
 				    end
 			    end
 	     	end
@@ -135,8 +136,9 @@ class VotesController < ApplicationController
 
 	def comment_params
 		#setting missing field
-		params[:vote][:user_id] = current_user.id
-		params[:vote][:complaint_id] = params[:id]
+		params[:vote][:user_id]       = current_user.id
+    params[:vote][:vote_type]     = 0
+		params[:vote][:complaint_id]  = params[:id]
 
 		#not permitting :vote_type
 		params.require(:vote).permit(:comment, :complaint_id, :user_id)
