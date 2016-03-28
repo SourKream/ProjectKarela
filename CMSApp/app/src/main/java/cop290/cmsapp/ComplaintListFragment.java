@@ -65,6 +65,8 @@ public class ComplaintListFragment extends Fragment {
         String Title;
         String Details;
         String Level;
+        Integer Upvotes = 0;
+        Integer Downvotes = 0;
 
         // Constructor parses JSON string and stores data in object
         public Complaint (String JsonString){
@@ -76,6 +78,8 @@ public class ComplaintListFragment extends Fragment {
                 Title = complaint.getString("title");
                 Details = complaint.getString("details");
                 Level = complaint.getString("level");
+                Upvotes = complaint.getInt("upvotes");
+                Downvotes = complaint.getInt("downvotes");
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }
