@@ -43,7 +43,7 @@ class VotesController < ApplicationController
 		    respond_to do |format|
 		      if @vote.update_attributes(vote_params)
 		        format.html { redirect_to complaint_path, notice: 'Vote was successfully updated.' }
-		        format.json { render :show, status: :ok, location: @vote }
+		        format.json {render json: {"success" => 1}}
 		      else
 		        format.html { render :edit }
 		        format.json { render json: @vote.errors, status: :unprocessable_entity }
@@ -108,7 +108,7 @@ class VotesController < ApplicationController
 		        respond_to do |format|
 		      	    if @vote.update_attributes(vote_type: 0)
 				       format.html { redirect_to complaint_path, notice: 'Vote was successfully updated.' }
-				       format.json { render :show, status: :ok, location: @vote }
+				       format.json {render json: {"success" => 1}}
 				    else
 				       format.html { render :edit }
 				       format.json { render json: @vote.errors, status: :unprocessable_entity }
