@@ -31,7 +31,8 @@ class ComplaintsController < ApplicationController
 
   # GET /complaints/1
   # GET /complaints/1.json
-  def show
+  def show    
+    @comments = Vote.where(complaint_id: params[:id]).where.not(comment: nil)
   end
 
   # GET /complaints/new

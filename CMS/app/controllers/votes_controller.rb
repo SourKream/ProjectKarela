@@ -11,7 +11,7 @@ class VotesController < ApplicationController
 	end
 
 #GET /complaints/1/vote
-    def new
+  def new
 	   @vote = Vote.new
 	end
 
