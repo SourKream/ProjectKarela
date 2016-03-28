@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     complaintListInstitute.clear();
                     complaintListPersonal.clear();
                     for(int i=0; i<response.length(); i++){
-                        Complaint complaint = new Complaint(response.getString(i));
+                        Complaint complaint = new Complaint(response.getString(i), false);
                         if (complaint.Level.equals("personal"))
                             complaintListPersonal.add(complaint);
                         else if (complaint.Level.equals("hostel"))

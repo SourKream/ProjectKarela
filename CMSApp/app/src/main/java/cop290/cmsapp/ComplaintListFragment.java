@@ -74,7 +74,7 @@ public class ComplaintListFragment extends Fragment {
         List<Integer> ResolvingUsers = new ArrayList<>();
 
         // Constructor parses JSON string and stores data in object
-        public Complaint (String JsonString){
+        public Complaint (String JsonString, boolean withVotes){
             JSONObject complaint = new JSONObject();
             try {
                 complaint = new JSONObject(JsonString);
@@ -104,13 +104,14 @@ public class ComplaintListFragment extends Fragment {
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }
-            try {
-                Upvotes = complaint.getInt("upvotes");
-                Downvotes = complaint.getInt("downvotes");
-            } catch (JSONException e) {
-                Log.d("JSON Exception : ", e.getMessage());
+            if (withVotes) {
+                try {
+                    Upvotes = complaint.getInt("upvotes");
+                    Downvotes = complaint.getInt("downvotes");
+                } catch (JSONException e) {
+                    Log.d("JSON Exception : ", e.getMessage());
+                }
             }
-
         }
     }
 

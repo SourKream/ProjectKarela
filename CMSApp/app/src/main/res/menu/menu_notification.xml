@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cop290.cmsapp.MainActivity">
+
+    <item
+        android:id="@+id/action_mark_all_read"
+        android:icon="@drawable/ic_spellcheck_white_24dp"
+        android:orderInCategory="10"
+        android:title="Mark All As Read"
+        app:showAsAction="ifRoom"/>
+
+</menu>
