@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public List<Complaint> complaintListHostel = new ArrayList<>();
     public List<Complaint> complaintListInstitute = new ArrayList<>();
     private ViewPager viewPager;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 try {
-                    Log.d("Response",result);
                     JSONArray response = new JSONArray(result);
                     complaintListHostel.clear();
                     complaintListInstitute.clear();
@@ -86,6 +86,11 @@ public class MainActivity extends AppCompatActivity {
                             complaintListInstitute.add(complaint);
                     }
                     ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
+                    if (((MyApplication) getApplication()).isUserLoggedIn())
+                        if (!((MyApplication) getApplication()).getMyUser().UserTypeName.equals("student"))
+                            fab.setVisibility(View.GONE);
+                        else
+                            fab.setVisibility(View.VISIBLE);
                 } catch (JSONException e) {
                     Log.d("JsonException",e.getMessage());
                 }

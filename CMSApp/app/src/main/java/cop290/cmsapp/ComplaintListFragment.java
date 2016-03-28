@@ -19,7 +19,6 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -50,10 +49,8 @@ public class ComplaintListFragment extends Fragment {
         complaintListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Go to the specific course activity when the course item is clicked
-                // Pass coursecode in Intent to populate next activity with the required data
                 Intent intent = new Intent(getActivity(), ComplaintActivity.class);
-//                intent.putExtra("complaintID", complaintList.get(position).ID);
+                intent.putExtra("ComplaintID", ((Complaint)complaintListView.getAdapter().getItem(position)).ID);
                 startActivity(intent);
             }
         });

@@ -2,6 +2,7 @@ package cop290.cmsapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -14,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,54 +25,71 @@ import java.util.List;
 public class NotificationActivity extends AppCompatActivity {
 
     private List<Notification> notifications = new ArrayList<>();
+    private ListView notificationsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
-        ListView notificationsListView = (ListView) findViewById(R.id.NotificationsListView);
+        getAllNotifications();
+
+        notificationsListView = (ListView) findViewById(R.id.NotificationsListView);
         notificationsListView.setAdapter(new NotificationListAdapter(this, notifications));
         notificationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO : Set links to required activities
-/*                view.setBackgroundColor(getResources().getColor(R.color.backgroundCustom));
-                notifications.get(position).Seen();
-                // Go to the required threads activity on item click
-                String description = notifications.get(position).description;
-                Log.d("ThreadID : ", description);
-                description = description.substring(description.indexOf("/threads/thread/") + 16, description.indexOf("'>thread"));
-                Integer ThreadID = Integer.parseInt(description);
-                goToThread(ThreadID);
-*/
+                view.setBackgroundColor(getResources().getColor(R.color.backgroudCustom));
+                notifications.get(position).markSeen();
+                goToComplaint(position);
             }
         });
     }
 
+    private void getAllNotifications(){
+        Networking.getRequest(4, new String[0], new Networking.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    Log.d("Response",result);
+                    JSONArray response = new JSONArray(result);
+                    notifications.clear();
+                    for(int i=0; i<response.length(); i++)
+                        notifications.add(new Notification(response.getString(i)));
+                    ((NotificationListAdapter) notificationsListView.getAdapter()).notifyDataSetChanged();
+                } catch (JSONException e) {
+                    Log.d("JsonException",e.getMessage());
+                }
+            }
+        });
+    }
+
+    private void goToComplaint(int position){
+        Intent intent = new Intent(this, ComplaintActivity.class);
+        intent.putExtra("ComplaintID", notifications.get(position).ComplaintID);
+        startActivity(intent);
+    }
+
     // Class to store details of a notification
     public static class Notification{
-        //TODO : Give own definition
-        String createdAt;
-        String description;
-        Integer ID;
-        Integer isSeen;
-        Integer UserID;
+        Integer NotificationID;
+        Integer ComplaintID;
+        Boolean isSeen;
+        String Details;
 
         public Notification (String JsonString){
             try {
                 JSONObject notification = new JSONObject(JsonString);
-                ID = notification.getInt("id");
-                isSeen = notification.getInt("is_seen");
-                UserID = notification.getInt("user_id");
-                createdAt = notification.getString("created_at");
-                description = notification.getString("description");
+                NotificationID = notification.getInt("notification_id");
+                isSeen = notification.getBoolean("is_seen");
+                ComplaintID = notification.getInt("complaint_id");
+                Details = notification.getString("details");
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }
         }
 
-        public void Seen(){isSeen = 1;}
+        public void markSeen(){isSeen = true;}
     }
 
     // Custom adapter to populate list view
@@ -104,18 +123,16 @@ public class NotificationActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (inflater == null)
                 inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            // TODO : Return custom list item view
-/*            if (convertView == null)
-                convertView = inflater.inflate(R.layout.notifications_list_item, null);
+            if (convertView == null)
+                convertView = inflater.inflate(R.layout.list_item_notification, null);
 
             TextView notificationDescription = (TextView) convertView.findViewById(R.id.notification);
-
             Notification notification = notificationsList.get(position);
 
-            notificationDescription.setText(Html.fromHtml(notification.description).toString());
-            if (notificationsList.get(position).isSeen == 0)
-                convertView.setBackgroundColor(getResources().getColor(R.color.highlightColor));
-*/
+            notificationDescription.setText(notification.Details);
+            if (!notificationsList.get(position).isSeen)
+                convertView.setBackgroundColor(getResources().getColor(R.color.notifHighlight));
+
             return convertView;
         }
     }
