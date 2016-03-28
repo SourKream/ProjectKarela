@@ -10,13 +10,6 @@
     tools:context="cop290.cmsapp.NewComplaintActivity"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter Details Below"
-        android:textSize="20sp"
-        android:paddingBottom="15sp"/>
-
     <LinearLayout
         android:id="@+id/new_complaint_form"
         android:layout_width="match_parent"
@@ -33,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:text="Level"
                 android:textSize="19sp"
-                android:gravity="center|end"
+                android:gravity="center|left"
                 android:layout_marginRight="5sp"/>
 
             <Spinner
@@ -53,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:text="Category"
                 android:textSize="19sp"
-                android:gravity="center|end"
+                android:gravity="center|left"
                 android:layout_marginRight="5sp"/>
 
             <Spinner
