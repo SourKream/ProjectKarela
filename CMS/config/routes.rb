@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   post  'complaints/:id/vote'         => 'votes#create_vote'
   post  'complaints/:id/comment'      => 'votes#create_comment'
   get   'complaints/:id/remove_vote'  => 'votes#delete_vote'
+  get   'complaints/:id/votes'        => 'votes#complaint_index'
 
   get   'complaints/:id/poke'         => 'notifications#poke'
 
