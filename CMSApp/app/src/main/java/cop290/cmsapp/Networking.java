@@ -26,7 +26,8 @@ public class Networking {
             new String[] {"/users/", ".json"},              //5
             new String[] {"/users.json"},                   //6
             new String[] {"/complaints/",".json"},          //7
-            new String[] {""}                               //8
+            new String[] {"/complaints/","/comment.json"},  //8
+            new String[] {"/complaints/","/vote.json"}      //9
     };
 
     public interface VolleyCallback{
@@ -57,9 +58,13 @@ public class Networking {
         MyApplication.mRequestQueue.add(stringRequest);
     }
 
-    public static void postRequest(int extensionCode, final Map<String, String> postParams, final VolleyCallback callback){
+    public static void postRequest(int extensionCode, String[] optArgs, final Map<String, String> postParams, final VolleyCallback callback){
 
         String url = urlBase + extensions[extensionCode][0];
+
+        for (int i=0; i<optArgs.length; i++){
+            url = url + optArgs[i] + extensions[extensionCode][i+1];
+        }
 
         Log.d("URL SENT: ", url);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -82,9 +87,13 @@ public class Networking {
         MyApplication.mRequestQueue.add(stringRequest);
     }
 
-    public static void postRequest(int extensionCode, JSONObject postParams, final VolleyCallback callback){
+    public static void postRequest(int extensionCode, String[] optArgs, JSONObject postParams, final VolleyCallback callback){
 
         String url = urlBase + extensions[extensionCode][0];
+
+        for (int i=0; i<optArgs.length; i++){
+            url = url + optArgs[i] + extensions[extensionCode][i+1];
+        }
 
         Log.d("URL SENT: ", url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postParams,

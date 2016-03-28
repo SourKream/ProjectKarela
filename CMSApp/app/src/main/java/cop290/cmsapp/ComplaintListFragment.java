@@ -75,15 +75,18 @@ public class ComplaintListFragment extends Fragment {
 
         // Constructor parses JSON string and stores data in object
         public Complaint (String JsonString){
+            JSONObject complaint = new JSONObject();
             try {
-                JSONObject complaint = new JSONObject(JsonString);
+                complaint = new JSONObject(JsonString);
+            } catch (JSONException e) {
+                Log.d("JSON Exception : ", e.getMessage());
+            }
+            try {
                 ID = complaint.getInt("id");
                 ComplaintTypeID = complaint.getInt("complaint_type_id");
                 Group = complaint.getString("group");
                 Title = complaint.getString("title");
                 Details = complaint.getString("details");
-//                Upvotes = complaint.getInt("upvotes");
-//                Downvotes = complaint.getInt("downvotes");
                 JSONArray action_users = complaint.getJSONArray("action_users");
                 for (int i=0; i<action_users.length(); i++)
                     ActionUsers.add(action_users.getInt(i));
@@ -93,10 +96,21 @@ public class ComplaintListFragment extends Fragment {
                 JSONArray resolving_users = complaint.getJSONArray("resolving_users");
                 for (int i=0; i<resolving_users.length(); i++)
                     ResolvingUsers.add(resolving_users.getInt(i));
-                Level = complaint.getString("level");
+                try {
+                    Level = complaint.getString("level");
+                } catch (JSONException e) {
+                    Log.d("JSON Exception : ", e.getMessage());
+                }
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }
+            try {
+                Upvotes = complaint.getInt("upvotes");
+                Downvotes = complaint.getInt("downvotes");
+            } catch (JSONException e) {
+                Log.d("JSON Exception : ", e.getMessage());
+            }
+
         }
     }
 

@@ -24,8 +24,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import cop290.cmsapp.ComplaintListFragment.Complaint;
 
@@ -42,6 +48,9 @@ public class ComplaintActivity extends AppCompatActivity {
     private TextView MyNameView;
     private TextView MyCommentTextView;
     private EditText NewCommentEditText;
+
+    private ImageView UpvoteButton;
+    private ImageView DownvoteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +74,20 @@ public class ComplaintActivity extends AppCompatActivity {
                 MyComment = new Comment(NewCommentEditText.getText().toString(),((MyApplication) getApplication()).getMyUser().Name);
                 MyNameView.setText(MyComment.commenterName);
                 MyCommentTextView.setText(MyComment.comment);
-                // TODO Post Comment to server
+
+                JSONObject args1 = new JSONObject();
+                try {
+                    args1 = new JSONObject("{vote: {comment: \"" + MyComment.comment + "\"}}");
+                } catch (JSONException e) {
+                    Log.d("JSON Exception : ", e.getMessage());
+                }
+                String args2[] = {Integer.toString(complaint.ID)};
+                Networking.postRequest(8, args2, args1, new Networking.VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Toast.makeText(getBaseContext(), "Comment Posted", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -78,6 +100,53 @@ public class ComplaintActivity extends AppCompatActivity {
                 NewCommentEditText.setText(MyComment.comment);
             }
         });
+
+        UpvoteButton = (ImageView) findViewById(R.id.upvoteButton);
+        UpvoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (MyComment == null || MyComment.VoteType != -1) {
+                    if (MyComment == null)
+                        MyComment = new Comment("", "");
+
+                    if (MyComment.VoteType == 1) {
+                        MyComment.VoteType = 0;
+                        complaint.Upvotes = complaint.Upvotes - 1;
+                    } else {
+                        MyComment.VoteType = 1;
+                        complaint.Upvotes = complaint.Upvotes + 1;
+                    }
+                    updateVotesDisplayed();
+                }
+            }
+        });
+
+        DownvoteButton = (ImageView) findViewById(R.id.downvoteButton);
+        DownvoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (MyComment == null || MyComment.VoteType != 1) {
+                    if (MyComment == null)
+                        MyComment = new Comment("", "");
+
+                    if (MyComment.VoteType == -1) {
+                        MyComment.VoteType = 0;
+                        complaint.Downvotes = complaint.Downvotes - 1;
+                    } else {
+                        MyComment.VoteType = -1;
+                        complaint.Downvotes = complaint.Downvotes + 1;
+                    }
+                    updateVotesDisplayed();
+                }
+            }
+        });
+    }
+
+    private void updateVotesDisplayed(){
+        ((TextView) findViewById(R.id.numUpvotes)).setText(Integer.toString(complaint.Upvotes));
+        ((TextView) findViewById(R.id.numDownvotes)).setText(Integer.toString(complaint.Downvotes));
     }
 
     private void loadComplaint(Integer complaintID){
@@ -86,6 +155,22 @@ public class ComplaintActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 complaint = new Complaint(result);
+
+                try {
+                    Integer MyUserID = ((MyApplication) getApplication()).getMyUser().ID;
+                    JSONObject response = new JSONObject(result);
+                    JSONArray commentsJSON = response.getJSONArray("comments");
+                    for (int i = 0; i < commentsJSON.length(); i++) {
+                        Comment comment = new Comment(commentsJSON.getString(i));
+                        if (comment.userID != MyUserID)
+                            commentList.add(comment);
+                        else
+                            MyComment = comment;
+                    }
+                } catch (JSONException e){
+                    Log.d("JSON Exception : ", e.getMessage());
+                }
+
                 displayComplaint();
             }
         });
@@ -104,13 +189,14 @@ public class ComplaintActivity extends AppCompatActivity {
         for (int i=0; i<adapter.getCount(); i++)
             commentsView.addView(adapter.getView(i, null, null));
 
-        ((TextView) findViewById(R.id.numUpvotes)).setText(Integer.toString(complaint.Upvotes));
-        ((TextView) findViewById(R.id.numDownvotes)).setText(Integer.toString(complaint.Downvotes));
+        updateVotesDisplayed();
 
-        if ((MyComment == null)||(MyComment.comment == null)){
+        if ((MyComment == null)||(MyComment.comment == null)||(MyComment.comment.equals(""))){
             NewCommentView.setVisibility(View.VISIBLE);
+            MyCommentView.setVisibility(View.GONE);
         } else {
             MyCommentView.setVisibility(View.VISIBLE);
+            NewCommentView.setVisibility(View.GONE);
             MyNameView.setText(MyComment.commenterName);
             MyCommentTextView.setText(MyComment.comment);
         }
@@ -134,11 +220,23 @@ public class ComplaintActivity extends AppCompatActivity {
 
     public static class Comment {
         String comment;
-        String commenterName;
+        String commenterName = "";
+        Integer userID;
+        Integer VoteType = 0;
 
         Comment(String comment, String commenterName) {
             this.comment = comment;
             this.commenterName = commenterName;
+        }
+
+        public Comment (String JsonString){
+            try {
+                JSONObject commentJson = new JSONObject(JsonString);
+                comment = commentJson.getString("comment");
+                userID = commentJson.getInt("user_id");
+            } catch (JSONException e) {
+                Log.d("JSON Exception : ", e.getMessage());
+            }
         }
     }
 

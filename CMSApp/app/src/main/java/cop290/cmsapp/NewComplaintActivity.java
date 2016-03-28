@@ -96,7 +96,7 @@ public class NewComplaintActivity extends AppCompatActivity {
                 }
 
                 if (!EditMode)
-                    Networking.postRequest(2, jsonObject, new Networking.VolleyCallback() {
+                    Networking.postRequest(2, new String[0], jsonObject, new Networking.VolleyCallback() {
                         @Override
                         public void onSuccess(String result) {
                             complaintPosted();

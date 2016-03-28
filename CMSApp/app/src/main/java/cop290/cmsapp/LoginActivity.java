@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("JsonException", e.getMessage());
         }
 
-        Networking.postRequest(0, jsonObject, new Networking.VolleyCallback() {
+        Networking.postRequest(0, new String[0], jsonObject, new Networking.VolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 showProgress(false);
