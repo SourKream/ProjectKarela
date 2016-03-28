@@ -1,14 +1,21 @@
 class VotesController < ApplicationController
 
-	
+#GET /view_votes
 	def index
 	   @votes = Vote.all
 	end
 
+#GET /complaints/1/votes
+	def complaint_index
+	   @votes = Vote.where(complaint_id: params[:id])
+	end
+
+#GET /complaints/1/vote
     def new
 	   @vote = Vote.new
 	end
 
+#GET /complaints/1/comment
 	def comment
 	   @vote = Vote.new
 	end
