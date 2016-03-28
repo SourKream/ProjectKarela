@@ -130,6 +130,7 @@ public class NotificationActivity extends AppCompatActivity {
             Notification notification = notificationsList.get(position);
 
             notificationDescription.setText(notification.Details);
+
             if (!notificationsList.get(position).isSeen)
                 convertView.setBackgroundColor(getResources().getColor(R.color.notifHighlight));
 
