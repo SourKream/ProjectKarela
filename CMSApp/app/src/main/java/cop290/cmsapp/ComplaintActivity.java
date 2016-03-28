@@ -3,6 +3,7 @@ package cop290.cmsapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,8 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,32 +32,51 @@ public class ComplaintActivity extends AppCompatActivity {
 
     private Complaint complaint;
     private List<Comment> commentList = new ArrayList<>();
+    private Comment MyComment;
+
+    private ImageView AddCommentButton;
+    private TextView EditCommentButton;
+    private RelativeLayout NewCommentView;
+    private LinearLayout MyCommentView;
+    private TextView MyNameView;
+    private TextView MyCommentTextView;
+    private EditText NewCommentEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         loadComplaint(getIntent().getIntExtra("ComplaintID", 0));
 
-        LinearLayout commentsView = (LinearLayout) findViewById(R.id.commentsList);
+        NewCommentView = (RelativeLayout) findViewById(R.id.NewCommentView);
+        MyCommentView = (LinearLayout) findViewById(R.id.MyCommentTextView);
+        MyNameView = (TextView) findViewById(R.id.MyName);
+        MyCommentTextView = (TextView) findViewById(R.id.MyComment);
+        NewCommentEditText = (EditText) findViewById(R.id.NewCommentEditText);
 
-        commentList.add(new Comment("This is the first comment", "Ajay"));
-        commentList.add(new Comment("Hey! I can comment too", "Sonakshi"));
+        AddCommentButton = (ImageView) findViewById(R.id.NewCommentButton);
+        AddCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewCommentView.setVisibility(View.GONE);
+                MyCommentView.setVisibility(View.VISIBLE);
+                MyComment = new Comment(NewCommentEditText.getText().toString(),((MyApplication) getApplication()).getMyUser().Name);
+                MyNameView.setText(MyComment.commenterName);
+                MyCommentTextView.setText(MyComment.comment);
+                // TODO Post Comment to server
+            }
+        });
 
-        CommentsListAdapter adapter = new CommentsListAdapter(this, commentList);
-        for (int i=0; i<adapter.getCount(); i++){
-            commentsView.addView(adapter.getView(i, null, null));
-        }
+        EditCommentButton = (TextView) findViewById(R.id.EditCommentButton);
+        EditCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyCommentView.setVisibility(View.GONE);
+                NewCommentView.setVisibility(View.VISIBLE);
+                NewCommentEditText.setText(MyComment.comment);
+            }
+        });
     }
 
     private void loadComplaint(Integer complaintID){
@@ -74,6 +97,22 @@ public class ComplaintActivity extends AppCompatActivity {
 
         TextView complaintDetails = (TextView) findViewById(R.id.complaint_details);
         complaintDetails.setText(complaint.Details);
+
+        LinearLayout commentsView = (LinearLayout) findViewById(R.id.commentsList);
+        CommentsListAdapter adapter = new CommentsListAdapter(this, commentList);
+        for (int i=0; i<adapter.getCount(); i++)
+            commentsView.addView(adapter.getView(i, null, null));
+
+        ((TextView) findViewById(R.id.numUpvotes)).setText(Integer.toString(complaint.Upvotes));
+        ((TextView) findViewById(R.id.numDownvotes)).setText(Integer.toString(complaint.Downvotes));
+
+        if ((MyComment == null)||(MyComment!=null && MyComment.comment == null)){
+            NewCommentView.setVisibility(View.VISIBLE);
+        } else {
+            MyCommentView.setVisibility(View.VISIBLE);
+            MyNameView.setText(MyComment.commenterName);
+            MyCommentTextView.setText(MyComment.comment);
+        }
     }
 
     public static class Comment {
