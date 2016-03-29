@@ -121,9 +121,11 @@ public class ComplaintActivity extends AppCompatActivity {
                     if (MyComment.VoteType == 1) {
                         MyComment.VoteType = 0;
                         complaint.Upvotes = complaint.Upvotes - 1;
+                        UpvoteButton.setAlpha((float)0.7);
                     } else {
                         MyComment.VoteType = 1;
                         complaint.Upvotes = complaint.Upvotes + 1;
+                        UpvoteButton.setAlpha((float)1);
                     }
                     updateVotesDisplayed();
                     sendVoteToServer();
@@ -143,9 +145,11 @@ public class ComplaintActivity extends AppCompatActivity {
                     if (MyComment.VoteType == -1) {
                         MyComment.VoteType = 0;
                         complaint.Downvotes = complaint.Downvotes - 1;
+                        DownvoteButton.setAlpha((float)0.7);
                     } else {
                         MyComment.VoteType = -1;
                         complaint.Downvotes = complaint.Downvotes + 1;
+                        DownvoteButton.setAlpha((float)1);
                     }
                     updateVotesDisplayed();
                     sendVoteToServer();
@@ -248,6 +252,12 @@ public class ComplaintActivity extends AppCompatActivity {
         for (int i=0; i<adapter.getCount(); i++)
             commentsView.addView(adapter.getView(i, null, null));
 
+        if ((MyComment != null)&&(MyComment.VoteType!=null)){
+            if (MyComment.VoteType == 1)
+                UpvoteButton.setAlpha((float)1);
+            if (MyComment.VoteType == -1)
+                DownvoteButton.setAlpha((float)1);
+        }
         updateVotesDisplayed();
 
         if ((MyComment == null)||(MyComment.comment == null)||(MyComment.comment.equals(""))||(MyComment.comment.equals("null"))){
