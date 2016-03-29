@@ -98,8 +98,12 @@ class ComplaintsController < ApplicationController
   # GET /complaints/1/mark_resolved.json
   def mark_resolved
     if logged_in? and (Complaint.find(params[:id].to_i).resolving_users.include? current_user.id)
-      Complaint.find(params[:id].to_i).update(is_resolved: true)
-      populate_resolved_notifications(params[:id].to_i)
+      if Complaint.find(params[:id].to_i).is_resolved == false
+        Complaint.find(params[:id].to_i).update(is_resolved: true)
+        populate_resolved_notifications(params[:id].to_i)
+      else    # toggle
+        Complaint.find(params[:id].to_i).update(is_resolved: false)
+        
       respond_to do |format|
         format.html {redirect_to complaints_path}
         format.json {render json: {"success" => 1}}
