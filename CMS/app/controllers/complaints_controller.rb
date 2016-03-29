@@ -103,7 +103,7 @@ class ComplaintsController < ApplicationController
         populate_resolved_notifications(params[:id].to_i)
       else    # toggle
         Complaint.find(params[:id].to_i).update(is_resolved: false)
-        
+      end
       respond_to do |format|
         format.html {redirect_to complaints_path}
         format.json {render json: {"success" => 1}}
