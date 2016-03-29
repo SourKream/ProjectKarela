@@ -58,3 +58,9 @@ ComplaintType.create(level: 1, type_name: 'fees', resolving_user_types: [UserTyp
 ComplaintType.create(level: 3, type_name: 'LAN ban', resolving_user_types: [UserType.find_by(type_name: 'dean').id, nil], action_user_types: [UserType.find_by(type_name: 'dean').id, nil])
 ComplaintType.create(level: 1, type_name: 'mess', resolving_user_types: [UserType.find_by(type_name: 'warden').id, nil], action_user_types: [UserType.find_by(type_name: 'maintenance secretary').id, UserType.find_by(type_name: 'warden').id, nil])
 ComplaintType.create(level: 3, type_name: 'Proxy Increase', resolving_user_types: [UserType.find_by(type_name: 'dean').id, nil], action_user_types: [UserType.find_by(type_name: 'dean').id, nil])
+ComplaintType.create(level: 1, type_name: 'Other (Personal)', resolving_user_types: [UserType.find_by(type_name: 'student').id, nil], action_user_types: [UserType.find_by(type_name: 'warden').id, nil])
+ComplaintType.create(level: 2, type_name: 'Other (Hostel)', resolving_user_types: [UserType.find_by(type_name: 'warden').id, nil], action_user_types: [UserType.find_by(type_name: 'maintenance secretary').id, UserType.find_by(type_name: 'warden').id, nil])
+ComplaintType.create(level: 3, type_name: 'Other (Institute)', resolving_user_types: [UserType.find_by(type_name: 'dean').id, nil], action_user_types: [UserType.find_by(type_name: 'dean').id, nil])
+
+
+
