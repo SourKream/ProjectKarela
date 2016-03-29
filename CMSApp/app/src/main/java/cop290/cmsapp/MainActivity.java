@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i=0; i<getCount(); i++){
                 if (mFragmentList.get(i).getActivity()!=null){
                     ((ComplaintListFragment.ComplaintListAdapter) ((ComplaintListFragment) mFragmentList.get(i)).complaintListView.getAdapter()).notifyDataSetChanged();
+                    ((ComplaintListFragment) mFragmentList.get(i)).checkEmptyness();
                 }
             }
         }

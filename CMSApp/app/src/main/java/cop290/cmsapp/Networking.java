@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO
 public class Networking {
 
     private final static String urlBase = "http://10.0.2.2:3000";
@@ -29,7 +28,7 @@ public class Networking {
             new String[] {"/complaints/","/comment.json"},  //8
             new String[] {"/complaints/","/vote.json"},     //9
             new String[] {"/notifs/","/mark_seen.json"},    //10
-            new String[] {"/complaints/","/mark_resolved.json"} //11
+            new String[] {"/complaints/","/mark_resolved.json"} //11w
     };
 
     public interface VolleyCallback{

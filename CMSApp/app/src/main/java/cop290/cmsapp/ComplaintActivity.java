@@ -49,7 +49,7 @@ public class ComplaintActivity extends AppCompatActivity {
     private TextView MyNameView;
     private TextView MyCommentTextView;
     private EditText NewCommentEditText;
-    private ImageButton MarkResovedButton;
+    private LinearLayout MarkResovedButton;
 
     private ImageView UpvoteButton;
     private ImageView DownvoteButton;
@@ -66,7 +66,7 @@ public class ComplaintActivity extends AppCompatActivity {
         MyNameView = (TextView) findViewById(R.id.MyName);
         MyCommentTextView = (TextView) findViewById(R.id.MyComment);
         NewCommentEditText = (EditText) findViewById(R.id.NewCommentEditText);
-        MarkResovedButton = (ImageButton) findViewById(R.id.MarkResolvedButton);
+        MarkResovedButton = (LinearLayout) findViewById(R.id.MarkResolvedButton);
 
         AddCommentButton = (ImageView) findViewById(R.id.NewCommentButton);
         AddCommentButton.setOnClickListener(new View.OnClickListener() {
@@ -121,9 +121,11 @@ public class ComplaintActivity extends AppCompatActivity {
                     if (MyComment.VoteType == 1) {
                         MyComment.VoteType = 0;
                         complaint.Upvotes = complaint.Upvotes - 1;
+                        UpvoteButton.setAlpha((float)0.7);
                     } else {
                         MyComment.VoteType = 1;
                         complaint.Upvotes = complaint.Upvotes + 1;
+                        UpvoteButton.setAlpha((float)1);
                     }
                     updateVotesDisplayed();
                     sendVoteToServer();
@@ -143,9 +145,11 @@ public class ComplaintActivity extends AppCompatActivity {
                     if (MyComment.VoteType == -1) {
                         MyComment.VoteType = 0;
                         complaint.Downvotes = complaint.Downvotes - 1;
+                        DownvoteButton.setAlpha((float)0.7);
                     } else {
                         MyComment.VoteType = -1;
                         complaint.Downvotes = complaint.Downvotes + 1;
+                        DownvoteButton.setAlpha((float)1);
                     }
                     updateVotesDisplayed();
                     sendVoteToServer();
@@ -220,6 +224,12 @@ public class ComplaintActivity extends AppCompatActivity {
                         MyComment = new Comment(MyCommentJson.getString(0));
                         MyComment.setCommenterName("You");
                     }
+                    ((TextView) findViewById(R.id.postingDateTextView)).setText(response.getString("created_at"));
+                    String Admins = response.getString("admin_user_names=");
+                    Admins = Admins.subSequence(1,Admins.length()-1).toString();
+                    Admins = Admins.replace("\"","");
+                    Admins = Admins.replace(",", ", ");
+                    ((TextView) findViewById(R.id.posterTextView)).setText(Admins);
                 } catch (JSONException e){
                     Log.d("JSON Exception : ", e.getMessage());
                 }
@@ -235,12 +245,19 @@ public class ComplaintActivity extends AppCompatActivity {
 
         TextView complaintDetails = (TextView) findViewById(R.id.complaint_details);
         complaintDetails.setText(complaint.Details);
+        //complaintDetails.setTypeface(MainActivity.MyriadPro);
 
         LinearLayout commentsView = (LinearLayout) findViewById(R.id.commentsList);
         CommentsListAdapter adapter = new CommentsListAdapter(this, commentList);
         for (int i=0; i<adapter.getCount(); i++)
             commentsView.addView(adapter.getView(i, null, null));
 
+        if ((MyComment != null)&&(MyComment.VoteType!=null)){
+            if (MyComment.VoteType == 1)
+                UpvoteButton.setAlpha((float)1);
+            if (MyComment.VoteType == -1)
+                DownvoteButton.setAlpha((float)1);
+        }
         updateVotesDisplayed();
 
         if ((MyComment == null)||(MyComment.comment == null)||(MyComment.comment.equals(""))||(MyComment.comment.equals("null"))){
