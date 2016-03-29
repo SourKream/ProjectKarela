@@ -21,7 +21,8 @@ android:paddingBottom="10dp">
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4">
+        android:layout_weight="4"
+        android:layout_marginRight="5dp">
 
     <TextView
         android:id="@+id/complaintTitle"
@@ -55,7 +56,7 @@ android:paddingBottom="10dp">
             android:layout_weight="1"
             android:src="@drawable/ic_add_black_24dp"
             android:id="@+id/complaint_res_status"
-            android:gravity="center"/>
+            android:gravity="center_vertical"/>
 
         <ImageView
             android:layout_width="match_parent"
