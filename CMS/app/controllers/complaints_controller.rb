@@ -49,7 +49,8 @@ class ComplaintsController < ApplicationController
   def create
     if logged_in?
       @complaint = Complaint.new(complaint_params)
-      
+      @complaint.is_resolved = false
+
       respond_to do |format|
         if @complaint.save
           populate_new_edit_notifications(params, "new")
