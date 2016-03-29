@@ -5,4 +5,15 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include ComplaintsHelper
   include NotificationsHelper
+
+  #GET /clear
+  def clear
+  	@complaints = Complaint.all
+  	@complaints.each do |complaint|
+	  	if is_deletable(complaint.id)
+	  		complaint.delete 
+	  	end
+ 	end
+  	redirect_to root_path
+  end
 end

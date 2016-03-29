@@ -111,4 +111,8 @@ module ComplaintsHelper
     (((Time.now - Complaint.find(id).updated_at.to_time) > 60) and Complaint.find(id).admin_users.include? current_user.id and (Complaint.find(id).is_resolved == false))
   end
   
+  #check if the resolved complaint is in the database for more than 30 days
+  def is_deletable(id)
+    (((Time.now - Complaint.find(id).updated_at.to_time)/1.day > 30) and (Complaint.find(id).is_resolved == true))
+  end
 end
