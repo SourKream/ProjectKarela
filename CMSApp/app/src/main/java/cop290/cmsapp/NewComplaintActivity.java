@@ -131,18 +131,23 @@ public class NewComplaintActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String result) {
                     complaint = new Complaint(result, false);
-                    ComplaintType currentComplaintType = new ComplaintType("");
+
+                    Log.d("Complaint",result);
+                    ComplaintType currentComplaintType = null;
                     for (int i=0; i<complaintTypes.size(); i++)
                         if (complaintTypes.get(i).ID == complaint.ComplaintTypeID)
                             currentComplaintType = complaintTypes.get(i);
 
-                    Log.d("HEERE",currentComplaintType.Level);
-                    if (currentComplaintType.Level.equals("personal"))
-                        levelSpinner.setSelection(0);
-                    else if (currentComplaintType.Level.equals("hostel"))
-                        levelSpinner.setSelection(1);
-                    else
-                        levelSpinner.setSelection(2);
+                    try {
+                        if (currentComplaintType.Level.equals("personal"))
+                            levelSpinner.setSelection(0);
+                        else if (currentComplaintType.Level.equals("hostel"))
+                            levelSpinner.setSelection(1);
+                        else
+                            levelSpinner.setSelection(2);
+                    } catch (NullPointerException e) {
+                        Log.d("CT Not Found",e.getMessage());
+                    }
 
                     setCategoryList();
                     categorySpinner.setSelection(categoryList.indexOf(currentComplaintType.Category));
@@ -154,7 +159,8 @@ public class NewComplaintActivity extends AppCompatActivity {
                     Integer MyID = ((MyApplication) getApplication()).getMyUser().ID;
                     for (int i=0; i<complaint.AdminUsers.size(); i++)
                         if (complaint.AdminUsers.get(i) != MyID) {
-                            AdminUsers = AdminUsers.concat(reverseStudentIDs.get(complaint.AdminUsers.get(i)));
+                            if (reverseStudentIDs.get(complaint.AdminUsers.get(i)) != null)
+                                AdminUsers = AdminUsers.concat(reverseStudentIDs.get(complaint.AdminUsers.get(i)));
                             AdminUsers = AdminUsers.concat(", ");
                         }
                     AdminUsersTextView.setText(AdminUsers);

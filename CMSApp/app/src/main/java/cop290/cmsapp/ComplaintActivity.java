@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,6 +49,7 @@ public class ComplaintActivity extends AppCompatActivity {
     private TextView MyNameView;
     private TextView MyCommentTextView;
     private EditText NewCommentEditText;
+    private ImageButton MarkResovedButton;
 
     private ImageView UpvoteButton;
     private ImageView DownvoteButton;
@@ -64,6 +66,7 @@ public class ComplaintActivity extends AppCompatActivity {
         MyNameView = (TextView) findViewById(R.id.MyName);
         MyCommentTextView = (TextView) findViewById(R.id.MyComment);
         NewCommentEditText = (EditText) findViewById(R.id.NewCommentEditText);
+        MarkResovedButton = (ImageButton) findViewById(R.id.MarkResolvedButton);
 
         AddCommentButton = (ImageView) findViewById(R.id.NewCommentButton);
         AddCommentButton.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +152,20 @@ public class ComplaintActivity extends AppCompatActivity {
                 }
             }
         });
+
+        MarkResovedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String args[] = {Integer.toString(complaint.ID)};
+                Networking.getRequest(11, args, new Networking.VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        complaint.isResolved = (!complaint.isResolved);
+                        markedResolved();
+                    }
+                });
+            }
+        });
     }
 
     private void sendVoteToServer(){
@@ -165,7 +182,10 @@ public class ComplaintActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Vote Updated", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    private void markedResolved(){
+        Toast.makeText(getBaseContext(), (complaint.isResolved)?"Marked Resolved":"Marked Unresolved", Toast.LENGTH_SHORT).show();
     }
 
     private void updateVotesDisplayed(){

@@ -109,12 +109,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="2"
+                    android:weightSum="3"
                     android:gravity="center_vertical"
                     android:padding="10sp">
 
                     <LinearLayout
-                        android:layout_weight="1"
+                        android:layout_weight="1.4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/MarkResolvedButton"
+                            android:layout_width="30sp"
+                            android:layout_height="30sp"
+                            android:src="@drawable/ic_add_circle_outline_black_36dp"
+                            android:visibility="visible"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="0.8"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -137,7 +153,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="1"
+                        android:layout_weight="0.8"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"

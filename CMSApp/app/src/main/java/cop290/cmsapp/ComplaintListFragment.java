@@ -72,6 +72,7 @@ public class ComplaintListFragment extends Fragment {
         List<Integer> ActionUsers = new ArrayList<>();
         List<Integer> AdminUsers = new ArrayList<>();
         List<Integer> ResolvingUsers = new ArrayList<>();
+        Boolean isResolved = false;
 
         // Constructor parses JSON string and stores data in object
         public Complaint (String JsonString, boolean withVotes){
@@ -87,6 +88,7 @@ public class ComplaintListFragment extends Fragment {
                 Group = complaint.getString("group");
                 Title = complaint.getString("title");
                 Details = complaint.getString("details");
+                isResolved = complaint.getBoolean("is_resolved");
                 JSONArray action_users = complaint.getJSONArray("action_users");
                 for (int i=0; i<action_users.length(); i++)
                     ActionUsers.add(action_users.getInt(i));
