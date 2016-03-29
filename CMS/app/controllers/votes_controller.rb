@@ -33,10 +33,10 @@ class VotesController < ApplicationController
 				respond_to do |format|
 				    if @vote.save
 				      format.html { redirect_to complaint_path, notice: 'Successfully Voted' }
-				      format.json { render :show, status: :created, location: @vote }
+				      format.json { render json: {"success" => 1}}
 				    else
 				      format.html { render :new }
-				      format.json { render json: @vote.errors, status: :unprocessable_entity }
+				      format.json { render json: {"success" => 0}}
 				    end
 			    end	
 			else
@@ -54,7 +54,7 @@ class VotesController < ApplicationController
 		else
 	    respond_to do |format|
 		    format.html {redirect_to login_path}
-		    format.json {render json: {"success" => 0, "user" => user}}
+		    format.json {render json: {"success" => 0}}
 	    end
 	  end
   end
@@ -118,7 +118,7 @@ class VotesController < ApplicationController
 		else
 		    respond_to do |format|
 		       format.html {redirect_to login_path}
-		       format.json {render json: {"success" => 0, "user" => user}}
+		       format.json {render json: {"success" => 0}}
 	        end
 	    end
   	end
@@ -137,7 +137,7 @@ class VotesController < ApplicationController
 	def comment_params
 		#setting missing field
 		params[:vote][:user_id]       = current_user.id
-    params[:vote][:vote_type]     = 0
+    	params[:vote][:vote_type]     = 0
 		params[:vote][:complaint_id]  = params[:id]
 
 		#not permitting :vote_type
