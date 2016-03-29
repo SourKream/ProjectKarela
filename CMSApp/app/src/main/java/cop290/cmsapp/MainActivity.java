@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
         if (id == R.id.action_notifications){
             Intent intent = new Intent(getBaseContext(), NotificationActivity.class);
@@ -196,10 +196,40 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             return true;
-        } else if (id == R.id.sort_resolved){
-
-        } else if (id == R.id.sort_mine){
-
+        } else if ((id == R.id.sort_resolved)||(id == R.id.sort_unresolved)||(id == R.id.sort_all)||(id == R.id.sort_mine)){
+            Networking.getRequest(2, new String[0], new Networking.VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    try {
+                        JSONArray response = new JSONArray(result);
+                        complaintListHostel.clear();
+                        complaintListInstitute.clear();
+                        complaintListPersonal.clear();
+                        Integer MyID = ((MyApplication) getApplication()).getMyUser().ID;
+                        for (int i = 0; i < response.length(); i++) {
+                            Complaint complaint = new Complaint(response.getString(i), false);
+                            if (((id == R.id.sort_resolved) && (complaint.isResolved))
+                                    || ((id == R.id.sort_unresolved) && (!complaint.isResolved))
+                                    || (id == R.id.sort_all)
+                                    || ((id == R.id.sort_mine)&&(complaint.AdminUsers.contains(MyID) || complaint.ActionUsers.contains(MyID) || complaint.ResolvingUsers.contains(MyID))))
+                                if (complaint.Level.equals("personal"))
+                                    complaintListPersonal.add(complaint);
+                                else if (complaint.Level.equals("hostel"))
+                                    complaintListHostel.add(complaint);
+                                else if (complaint.Level.equals("institute"))
+                                    complaintListInstitute.add(complaint);
+                        }
+                        ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
+                        if (((MyApplication) getApplication()).isUserLoggedIn())
+                            if (((MyApplication) getApplication()).getMyUser().UserType == 2)
+                                fab.setVisibility(View.VISIBLE);
+                            else
+                                fab.setVisibility(View.GONE);
+                    } catch (JSONException e) {
+                        Log.d("JsonException", e.getMessage());
+                    }
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);
