@@ -49,7 +49,7 @@ public class ComplaintActivity extends AppCompatActivity {
     private TextView MyNameView;
     private TextView MyCommentTextView;
     private EditText NewCommentEditText;
-    private ImageView MarkResovedButton;
+    private LinearLayout MarkResovedButton;
 
     private ImageView UpvoteButton;
     private ImageView DownvoteButton;
@@ -66,7 +66,7 @@ public class ComplaintActivity extends AppCompatActivity {
         MyNameView = (TextView) findViewById(R.id.MyName);
         MyCommentTextView = (TextView) findViewById(R.id.MyComment);
         NewCommentEditText = (EditText) findViewById(R.id.NewCommentEditText);
-        MarkResovedButton = (ImageView) findViewById(R.id.MarkResolvedButton);
+        MarkResovedButton = (LinearLayout) findViewById(R.id.MarkResolvedButton);
 
         AddCommentButton = (ImageView) findViewById(R.id.NewCommentButton);
         AddCommentButton.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +224,7 @@ public class ComplaintActivity extends AppCompatActivity {
                     String Admins = response.getString("admin_user_names=");
                     Admins = Admins.subSequence(1,Admins.length()-1).toString();
                     Admins = Admins.replace("\"","");
-                    Admins = Admins.replace(",",", ");
+                    Admins = Admins.replace(",", ", ");
                     ((TextView) findViewById(R.id.posterTextView)).setText(Admins);
                 } catch (JSONException e){
                     Log.d("JSON Exception : ", e.getMessage());
