@@ -53,9 +53,9 @@ public class MyApplication extends Application{
                 ID = user.getInt("id");
                 Name = user.getString("name");
                 UserType = user.getInt("user_type_id");
-                UserTypeName = user.getString("user_type");
                 Group = user.getString("group");
                 ContactNo = user.getString("contact_no");
+                UserTypeName = user.getString("user_type");
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }

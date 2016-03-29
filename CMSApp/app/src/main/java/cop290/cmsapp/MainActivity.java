@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
                     ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
                     //TODO FIX THIS
                     if (((MyApplication) getApplication()).isUserLoggedIn())
-                        if (!((MyApplication) getApplication()).getMyUser().UserTypeName.equals("student"))
-                            fab.setVisibility(View.GONE);
-                        else
+                        if (((MyApplication) getApplication()).getMyUser().UserType == 2)
                             fab.setVisibility(View.VISIBLE);
+                        else
+                            fab.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.d("JsonException",e.getMessage());
                 }
