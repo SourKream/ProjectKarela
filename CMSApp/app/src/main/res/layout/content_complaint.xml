@@ -12,88 +12,68 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15sp">
+        android:padding="10sp">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10sp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/complaint_details"
+                    android:textSize="16sp"
+                    android:text="Description here"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="10sp">
+                    <TextView
+                        android:layout_width="100sp"
+                        android:layout_height="wrap_content"
+                        android:text="Posted By"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Poster"
+                        android:textSize="14sp"
+                        android:id="@+id/posterTextView"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="100sp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="Posted On"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Posting Date"
+                        android:textSize="14sp"
+                        android:id="@+id/postingDateTextView"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/EditComplaintButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="EDIT"
-                    android:layout_alignParentRight="true"
                     android:textSize="12sp"
-                    android:paddingTop="15sp"
-                    android:paddingRight="15sp"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="15sp"
-                    android:orientation="vertical"
-                    android:layout_below="@id/EditComplaintButton"
-                    >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/complaint_details"
-                        android:textSize="16sp"
-                        android:text="@string/large_text"
-                        />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="10sp">
-
-                        <TextView
-                            android:layout_width="100sp"
-                            android:layout_height="wrap_content"
-                            android:text="Posted By"
-                            android:textSize="14sp"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Poster"
-                            android:textSize="14sp"
-                            android:id="@+id/posterTextView"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="100sp"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="Posted On"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Posting Date"
-                            android:textSize="14sp"
-                            android:id="@+id/postingDateTextView"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
+                    android:layout_gravity="right"
+                    />
+            </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <LinearLayout
@@ -109,12 +89,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
                     android:gravity="center_vertical"
                     android:padding="10sp">
 
                     <LinearLayout
-                        android:layout_weight="1.4"
+                        android:layout_weight="2.5"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -139,6 +118,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:alpha="0.5"
                             android:id="@+id/upvoteButton"
                             android:src="@drawable/ic_thumb_up_black_36dp"/>
 
@@ -148,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
                             android:paddingLeft="10sp"
-                            android:text="UpVotes"/>
+                            android:text="UV"/>
 
                     </LinearLayout>
 
@@ -162,6 +142,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:alpha="0.5"
                             android:id="@+id/downvoteButton"
                             android:src="@drawable/ic_thumb_down_black_36dp"/>
 
@@ -171,7 +152,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
                             android:paddingLeft="10sp"
-                            android:text="DownVotes"/>
+                            android:text="DV"/>
 
                     </LinearLayout>
 
@@ -181,17 +162,27 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="COMMENTS"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="10dp"/>
+
         <LinearLayout
             android:id="@+id/commentsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="10sp"/>
+            android:paddingBottom="5sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10sp">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
