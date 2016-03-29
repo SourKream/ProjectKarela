@@ -49,7 +49,7 @@ public class ComplaintActivity extends AppCompatActivity {
     private TextView MyNameView;
     private TextView MyCommentTextView;
     private EditText NewCommentEditText;
-    private ImageButton MarkResovedButton;
+    private ImageView MarkResovedButton;
 
     private ImageView UpvoteButton;
     private ImageView DownvoteButton;
@@ -66,7 +66,7 @@ public class ComplaintActivity extends AppCompatActivity {
         MyNameView = (TextView) findViewById(R.id.MyName);
         MyCommentTextView = (TextView) findViewById(R.id.MyComment);
         NewCommentEditText = (EditText) findViewById(R.id.NewCommentEditText);
-        MarkResovedButton = (ImageButton) findViewById(R.id.MarkResolvedButton);
+        MarkResovedButton = (ImageView) findViewById(R.id.MarkResolvedButton);
 
         AddCommentButton = (ImageView) findViewById(R.id.NewCommentButton);
         AddCommentButton.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +220,10 @@ public class ComplaintActivity extends AppCompatActivity {
                         MyComment = new Comment(MyCommentJson.getString(0));
                         MyComment.setCommenterName("You");
                     }
+                    ((TextView) findViewById(R.id.postingDateTextView)).setText(response.getString("created_at"));
+                    String Admins = response.getString("admin_user_names");
+                    Admins = Admins.subSequence(1,Admins.length()-1).toString();
+                    ((TextView) findViewById(R.id.posterTextView)).setText(Admins);
                 } catch (JSONException e){
                     Log.d("JSON Exception : ", e.getMessage());
                 }

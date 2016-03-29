@@ -120,7 +120,7 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/MarkResolvedButton"
                             android:layout_width="30sp"
                             android:layout_height="30sp"

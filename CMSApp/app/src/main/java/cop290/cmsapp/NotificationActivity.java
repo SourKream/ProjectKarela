@@ -96,6 +96,7 @@ public class NotificationActivity extends AppCompatActivity {
     // Class to store details of a notification
     public static class Notification{
         Integer NotificationID;
+        Integer ID;
         Integer ComplaintID;
         Boolean isSeen;
         String Details;
@@ -107,6 +108,7 @@ public class NotificationActivity extends AppCompatActivity {
                 isSeen = notification.getBoolean("is_seen");
                 ComplaintID = notification.getInt("complaint_id");
                 Details = notification.getString("details");
+                ID = notification.getInt("id");
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
             }
@@ -114,7 +116,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         public void markSeen(){
             isSeen = true;
-            String args[] = {Integer.toString(NotificationID)};
+            String args[] = {Integer.toString(ID)};
             Networking.getRequest(10, args, new Networking.VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {}
