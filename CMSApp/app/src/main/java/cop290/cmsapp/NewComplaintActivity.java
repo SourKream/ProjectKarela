@@ -130,12 +130,13 @@ public class NewComplaintActivity extends AppCompatActivity {
             Networking.getRequest(7, args, new Networking.VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    complaint = new Complaint(result);
+                    complaint = new Complaint(result, false);
                     ComplaintType currentComplaintType = new ComplaintType("");
                     for (int i=0; i<complaintTypes.size(); i++)
                         if (complaintTypes.get(i).ID == complaint.ComplaintTypeID)
                             currentComplaintType = complaintTypes.get(i);
 
+                    Log.d("HEERE",currentComplaintType.Level);
                     if (currentComplaintType.Level.equals("personal"))
                         levelSpinner.setSelection(0);
                     else if (currentComplaintType.Level.equals("hostel"))

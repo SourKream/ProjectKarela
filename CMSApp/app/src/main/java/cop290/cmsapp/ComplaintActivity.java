@@ -178,7 +178,7 @@ public class ComplaintActivity extends AppCompatActivity {
         Networking.getRequest(7, args, new Networking.VolleyCallback() {
             @Override
             public void onSuccess(String result) {
-                complaint = new Complaint(result);
+                complaint = new Complaint(result, true);
 
                 try {
                     Integer MyUserID = ((MyApplication) getApplication()).getMyUser().ID;
