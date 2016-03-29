@@ -119,9 +119,9 @@ public class NewComplaintActivity extends AppCompatActivity {
         AdminUsersTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         AdminUsersTextView.setThreshold(1);
         AdminUsersTextView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, studentNames));
+    }
 
-        loadStudentUsers();
-
+    private void setupEditEnv(){
         Intent intent = getIntent();
         EditMode = intent.getBooleanExtra("EditMode", false);
         if (EditMode){
@@ -131,8 +131,6 @@ public class NewComplaintActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String result) {
                     complaint = new Complaint(result, false);
-
-                    Log.d("Complaint",result);
                     ComplaintType currentComplaintType = null;
                     for (int i=0; i<complaintTypes.size(); i++)
                         if (complaintTypes.get(i).ID == complaint.ComplaintTypeID)
@@ -159,12 +157,10 @@ public class NewComplaintActivity extends AppCompatActivity {
                     Integer MyID = ((MyApplication) getApplication()).getMyUser().ID;
                     for (int i=0; i<complaint.AdminUsers.size(); i++)
                         if (complaint.AdminUsers.get(i) != MyID) {
-                            if (reverseStudentIDs.get(complaint.AdminUsers.get(i)) != null)
-                                AdminUsers = AdminUsers.concat(reverseStudentIDs.get(complaint.AdminUsers.get(i)));
+                            AdminUsers = AdminUsers.concat(reverseStudentIDs.get(complaint.AdminUsers.get(i)));
                             AdminUsers = AdminUsers.concat(", ");
                         }
                     AdminUsersTextView.setText(AdminUsers);
-
                 }
             });
         }
@@ -188,6 +184,7 @@ public class NewComplaintActivity extends AppCompatActivity {
                         }
                     }
                     ((ArrayAdapter) AdminUsersTextView.getAdapter()).notifyDataSetChanged();
+                    setupEditEnv();
                 } catch (JSONException e) {
                     Log.d("JsonException", e.getMessage());
                 }
@@ -217,6 +214,7 @@ public class NewComplaintActivity extends AppCompatActivity {
                     for(int i=0; i<response.length(); i++)
                         complaintTypes.add(new ComplaintType(response.getString(i)));
                     setCategoryList();
+                    loadStudentUsers();
                 } catch (JSONException e) {
                     Log.d("JsonException",e.getMessage());
                 }

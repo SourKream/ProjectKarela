@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO
 public class Networking {
 
     private final static String urlBase = "http://10.0.2.2:3000";

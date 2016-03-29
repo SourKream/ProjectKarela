@@ -221,8 +221,10 @@ public class ComplaintActivity extends AppCompatActivity {
                         MyComment.setCommenterName("You");
                     }
                     ((TextView) findViewById(R.id.postingDateTextView)).setText(response.getString("created_at"));
-                    String Admins = response.getString("admin_user_names");
+                    String Admins = response.getString("admin_user_names=");
                     Admins = Admins.subSequence(1,Admins.length()-1).toString();
+                    Admins = Admins.replace("\"","");
+                    Admins = Admins.replace(",",", ");
                     ((TextView) findViewById(R.id.posterTextView)).setText(Admins);
                 } catch (JSONException e){
                     Log.d("JSON Exception : ", e.getMessage());
