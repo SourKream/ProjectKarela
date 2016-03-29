@@ -196,6 +196,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             return true;
+        } else if (id == R.id.sort_resolved){
+
+        } else if (id == R.id.sort_mine){
+
         }
 
         return super.onOptionsItemSelected(item);

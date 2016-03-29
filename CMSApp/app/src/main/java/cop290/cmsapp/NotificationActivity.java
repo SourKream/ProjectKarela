@@ -62,7 +62,6 @@ public class NotificationActivity extends AppCompatActivity {
         if (id == R.id.action_mark_all_read){
             for (int i=0; i<notifications.size(); i++)
                 notifications.get(i).markSeen();
-            finish();
             return true;
         }
 

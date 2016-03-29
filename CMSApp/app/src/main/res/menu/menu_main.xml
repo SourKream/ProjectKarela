@@ -15,4 +15,17 @@
         android:orderInCategory="20"
         android:title="Log Out"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/sort_resolved"
+        android:orderInCategory="12"
+        android:title="Show Resolved"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/sort_mine"
+        android:orderInCategory="13"
+        android:title="Show Mine"
+        app:showAsAction="never"/>
+
 </menu>

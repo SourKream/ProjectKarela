@@ -179,12 +179,19 @@ public class ComplaintListFragment extends Fragment {
 
             Complaint complaint = complaintList.get(position);
 
-            if (complaint.isResolved)
-                convertView.setBackgroundColor(getResources().getColor(R.color.notifHighlight));
-            else
-                convertView.setBackgroundColor(getResources().getColor(R.color.backgroudCustom));
+            ImageView complaintResStatus = (ImageView) convertView.findViewById(R.id.complaint_res_status);
 
-            complaintSNo.setText(String.format("%d",position+1));
+            if (complaint.isResolved)
+                complaintResStatus.setImageResource(R.drawable.ic_circle_green);
+            else
+                complaintResStatus.setImageResource(R.drawable.ic_circle_orange);
+
+            if (complaint.AdminUsers.contains(((MyApplication)getActivity().getApplication()).getMyUser().ID))
+                ((ImageView) convertView.findViewById(R.id.complaint_is_mine)).setVisibility(View.VISIBLE);
+            else
+                ((ImageView) convertView.findViewById(R.id.complaint_is_mine)).setVisibility(View.INVISIBLE);
+
+            complaintSNo.setText(String.format("%d", position + 1));
             complaintTitle.setText(complaint.Title);
             complaintTitle.setTypeface(MainActivity.MyriadPro);
             complaintDescription.setText(complaint.Details);
