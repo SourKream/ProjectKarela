@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                             complaintListInstitute.add(complaint);
                     }
                     ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
-                    //TODO FIX THIS
                     if (((MyApplication) getApplication()).isUserLoggedIn())
                         if (((MyApplication) getApplication()).getMyUser().UserType == 2)
                             fab.setVisibility(View.VISIBLE);

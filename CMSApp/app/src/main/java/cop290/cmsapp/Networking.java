@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Networking {
 
-    private final static String urlBase = "http://10.0.2.2:3000";
+    private final static String urlBase = "http://10.192.47.7:3000";
 
     private final static String extensions[][] = {
             new String[] {"/login.json"},                   //0

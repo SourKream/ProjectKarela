@@ -190,6 +190,15 @@ public class ComplaintActivity extends AppCompatActivity {
 
     private void markedResolved(){
         Toast.makeText(getBaseContext(), (complaint.isResolved)?"Marked Resolved":"Marked Unresolved", Toast.LENGTH_SHORT).show();
+        ImageView resolved_tick = (ImageView) findViewById(R.id.resolved_tick);
+        TextView resolved_text = (TextView) findViewById(R.id.resolved_text);
+        if (complaint.isResolved){
+            resolved_tick.setImageResource(R.drawable.ic_done_green_24dp);
+            resolved_text.setTextColor(getResources().getColor(R.color.emerald));
+        } else {
+            resolved_tick.setImageResource(R.drawable.ic_done_black_24dp);
+            resolved_text.setTextColor(getResources().getColor(R.color.textColour));
+        }
     }
 
     private void updateVotesDisplayed(){
@@ -225,7 +234,7 @@ public class ComplaintActivity extends AppCompatActivity {
                         MyComment.setCommenterName("You");
                     }
                     ((TextView) findViewById(R.id.postingDateTextView)).setText(response.getString("created_at"));
-                    String Admins = response.getString("admin_user_names=");
+                    String Admins = response.getString("admin_user_names");
                     Admins = Admins.subSequence(1,Admins.length()-1).toString();
                     Admins = Admins.replace("\"","");
                     Admins = Admins.replace(",", ", ");
@@ -259,6 +268,16 @@ public class ComplaintActivity extends AppCompatActivity {
                 DownvoteButton.setAlpha((float)1);
         }
         updateVotesDisplayed();
+
+        ImageView resolved_tick = (ImageView) findViewById(R.id.resolved_tick);
+        TextView resolved_text = (TextView) findViewById(R.id.resolved_text);
+        if (complaint.isResolved){
+            resolved_tick.setImageResource(R.drawable.ic_done_green_24dp);
+            resolved_text.setTextColor(getResources().getColor(R.color.emerald));
+        } else {
+            resolved_tick.setImageResource(R.drawable.ic_done_black_24dp);
+            resolved_text.setTextColor(getResources().getColor(R.color.textColour));
+        }
 
         if ((MyComment == null)||(MyComment.comment == null)||(MyComment.comment.equals(""))||(MyComment.comment.equals("null"))){
             NewCommentView.setVisibility(View.VISIBLE);

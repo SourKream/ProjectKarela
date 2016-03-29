@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="backgroudCustom">#EEEEEE</color>
     <color name="notifHighlight">#bbdefb</color>
+    <color name="emerald">#2ecc71</color>
+    <color name="textColour">#8e8e8e</color>
 </resources>

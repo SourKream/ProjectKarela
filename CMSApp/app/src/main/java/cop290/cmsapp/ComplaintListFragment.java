@@ -176,12 +176,13 @@ public class ComplaintListFragment extends Fragment {
             TextView complaintSNo           = (TextView) convertView.findViewById(R.id.SNo);
             TextView complaintTitle         = (TextView) convertView.findViewById(R.id.complaintTitle);
             TextView complaintDescription   = (TextView) convertView.findViewById(R.id.complaintDescription);
-            //TextView complaintPostedBy      = (TextView) convertView.findViewById(R.id.complaintPostedBy);
 
             Complaint complaint = complaintList.get(position);
 
             if (complaint.isResolved)
                 convertView.setBackgroundColor(getResources().getColor(R.color.notifHighlight));
+            else
+                convertView.setBackgroundColor(getResources().getColor(R.color.backgroudCustom));
 
             complaintSNo.setText(String.format("%d",position+1));
             complaintTitle.setText(complaint.Title);
