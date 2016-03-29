@@ -241,6 +241,7 @@ public class ComplaintActivity extends AppCompatActivity {
 
         TextView complaintDetails = (TextView) findViewById(R.id.complaint_details);
         complaintDetails.setText(complaint.Details);
+        //complaintDetails.setTypeface(MainActivity.MyriadPro);
 
         LinearLayout commentsView = (LinearLayout) findViewById(R.id.commentsList);
         CommentsListAdapter adapter = new CommentsListAdapter(this, commentList);
