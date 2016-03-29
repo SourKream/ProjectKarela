@@ -53,6 +53,7 @@ public class ComplaintActivity extends AppCompatActivity {
     private EditText NewCommentEditText;
     private LinearLayout MarkResovedButton;
     private CardView PokeButton;
+    private TextView EditComplaintButton;
 
     private ImageView UpvoteButton;
     private ImageView DownvoteButton;
@@ -187,6 +188,18 @@ public class ComplaintActivity extends AppCompatActivity {
                 });
             }
         });
+
+        EditComplaintButton = (TextView) findViewById(R.id.EditComplaintButton);
+        EditComplaintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent intent = new Intent(getBaseContext(), NewComplaintActivity.class);
+                intent.putExtra("EditMode", true);
+                intent.putExtra("ComplaintID", complaint.ID);
+                startActivity(intent);
+            }
+        });
     }
 
     private void sendVoteToServer(){
@@ -257,8 +270,7 @@ public class ComplaintActivity extends AppCompatActivity {
                     Admins = Admins.replace(",", ", ");
                     ((TextView) findViewById(R.id.posterTextView)).setText(Admins);
 
-                    //TODO
-                    if (response.getBoolean(""))
+                    if (response.getBoolean("is_pokable"))
                         PokeButton.setVisibility(View.VISIBLE);
                     else
                         PokeButton.setVisibility(View.GONE);
@@ -312,25 +324,27 @@ public class ComplaintActivity extends AppCompatActivity {
             MyCommentTextView.setText(MyComment.comment);
         }
 
-        if (complaint.ResolvingUsers.contains(((MyApplication) getApplication()).getMyUser().ID))
+        if (complaint.ResolvingUsers.contains(((MyApplication) getApplication()).getMyUser().ID)) {
+            MarkResovedButton.setClickable(true);
             findViewById(R.id.complaint_is_resolving_user).setVisibility(View.VISIBLE);
-        else
+        } else {
+            MarkResovedButton.setClickable(false);
             findViewById(R.id.complaint_is_resolving_user).setVisibility(View.GONE);
+        }
 
-        Integer MyUserID = ((MyApplication) getApplication()).getMyUser().ID;
-        if (complaint.AdminUsers.contains(MyUserID)){
-            TextView EditComplaintButton = (TextView) findViewById(R.id.EditComplaintButton);
+        MyApplication.User MyUser = ((MyApplication) getApplication()).getMyUser();
+        Integer MyUserID = MyUser.ID;
+        if (complaint.AdminUsers.contains(MyUserID))
             EditComplaintButton.setVisibility(View.VISIBLE);
-            EditComplaintButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                    Intent intent = new Intent(getBaseContext(), NewComplaintActivity.class);
-                    intent.putExtra("EditMode", true);
-                    intent.putExtra("ComplaintID", complaint.ID);
-                    startActivity(intent);
-                }
-            });
+        else
+            EditComplaintButton.setVisibility(View.GONE);
+
+        if (MyUser.UserType!=2){
+            UpvoteButton.setClickable(false);
+            DownvoteButton.setClickable(false);
+        } else {
+            UpvoteButton.setClickable(true);
+            DownvoteButton.setClickable(true);
         }
     }
 
