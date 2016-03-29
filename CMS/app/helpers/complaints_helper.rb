@@ -108,7 +108,7 @@ module ComplaintsHelper
   end  
   
   def is_pokable(id)    #snair
-    (Time.now - Complaint.find(id).updated_at.to_time) > 60
+    (((Time.now - Complaint.find(id).updated_at.to_time) > 60) and Complaint.find(id).admin_users.include? current_user.id)
   end
   
 end
