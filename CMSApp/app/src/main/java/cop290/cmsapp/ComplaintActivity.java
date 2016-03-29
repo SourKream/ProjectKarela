@@ -27,6 +27,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Network;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +52,7 @@ public class ComplaintActivity extends AppCompatActivity {
     private TextView MyCommentTextView;
     private EditText NewCommentEditText;
     private LinearLayout MarkResovedButton;
+    private CardView PokeButton;
 
     private ImageView UpvoteButton;
     private ImageView DownvoteButton;
@@ -157,6 +160,20 @@ public class ComplaintActivity extends AppCompatActivity {
             }
         });
 
+        PokeButton = (CardView) findViewById(R.id.poke_button);
+        PokeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String args[] = {Integer.toString(complaint.ID)};
+                Networking.getRequest(12, args, new Networking.VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        PokeButton.setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
+
         MarkResovedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,6 +256,12 @@ public class ComplaintActivity extends AppCompatActivity {
                     Admins = Admins.replace("\"","");
                     Admins = Admins.replace(",", ", ");
                     ((TextView) findViewById(R.id.posterTextView)).setText(Admins);
+
+                    //TODO
+                    if (response.getBoolean(""))
+                        PokeButton.setVisibility(View.VISIBLE);
+                    else
+                        PokeButton.setVisibility(View.GONE);
                 } catch (JSONException e){
                     Log.d("JSON Exception : ", e.getMessage());
                 }
