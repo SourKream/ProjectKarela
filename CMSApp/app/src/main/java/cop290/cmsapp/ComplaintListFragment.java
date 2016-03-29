@@ -88,7 +88,12 @@ public class ComplaintListFragment extends Fragment {
                 Group = complaint.getString("group");
                 Title = complaint.getString("title");
                 Details = complaint.getString("details");
-                isResolved = complaint.getBoolean("is_resolved");
+
+                if (complaint.getString("is_resolved").equals("null"))
+                    isResolved = false;
+                else
+                    isResolved = complaint.getBoolean("is_resolved");
+
                 JSONArray action_users = complaint.getJSONArray("action_users");
                 for (int i=0; i<action_users.length(); i++)
                     ActionUsers.add(action_users.getInt(i));
@@ -156,6 +161,9 @@ public class ComplaintListFragment extends Fragment {
             //TextView complaintPostedBy      = (TextView) convertView.findViewById(R.id.complaintPostedBy);
 
             Complaint complaint = complaintList.get(position);
+
+            if (complaint.isResolved)
+                convertView.setBackgroundColor(getResources().getColor(R.color.notifHighlight));
 
             complaintSNo.setText(String.format("%d",position+1));
             complaintTitle.setText(complaint.Title);
