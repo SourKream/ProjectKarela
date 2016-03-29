@@ -67,6 +67,7 @@ class VotesController < ApplicationController
 				@vote = Vote.new(comment_params)
 				respond_to do |format|
 				    if @vote.save
+               populate_comment_notifications(params[:id])
 				       format.html { redirect_to complaint_path, notice: 'Successfully Voted' }
 				       format.json {render json: {"success" => 1}}
 				    else
@@ -75,8 +76,9 @@ class VotesController < ApplicationController
 				    end
 			    end	
 			else
-		        respond_to do |format|
-		      	    if @vote.update_attributes(comment_params)
+		      respond_to do |format|
+		      	if @vote.update_attributes(comment_params)
+               populate_comment_notifications(params[:id])
 				       format.html { redirect_to complaint_path, notice: 'Vote was successfully updated.' }
 				       format.json {render json: {"success" => 1}}
 				    else
