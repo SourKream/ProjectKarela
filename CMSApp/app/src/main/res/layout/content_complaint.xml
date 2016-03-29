@@ -195,6 +195,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="You can mark this complaint as resolved."
+            android:textSize="12sp"
+            android:gravity="left"
+            android:paddingTop="7dp"
+            android:paddingRight="7dp"
+            android:paddingLeft="15dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/complaint_is_resolving_user"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="COMMENTS"
             android:textSize="16sp"
             android:gravity="center"
