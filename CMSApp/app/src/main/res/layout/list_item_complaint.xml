@@ -48,15 +48,15 @@ android:paddingBottom="10dp">
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
-        android:paddingRight="5dp">
+        android:layout_marginRight="5dp">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_add_black_24dp"
+            android:src="@drawable/ic_circle_green"
             android:id="@+id/complaint_res_status"
-            android:gravity="center_vertical"/>
+            android:gravity="center_horizontal"/>
 
         <ImageView
             android:layout_width="match_parent"
