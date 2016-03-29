@@ -289,6 +289,11 @@ public class ComplaintActivity extends AppCompatActivity {
             MyCommentTextView.setText(MyComment.comment);
         }
 
+        if (complaint.ResolvingUsers.contains(((MyApplication) getApplication()).getMyUser().ID))
+            findViewById(R.id.complaint_is_resolving_user).setVisibility(View.VISIBLE);
+        else
+            findViewById(R.id.complaint_is_resolving_user).setVisibility(View.GONE);
+
         Integer MyUserID = ((MyApplication) getApplication()).getMyUser().ID;
         if (complaint.AdminUsers.contains(MyUserID)){
             TextView EditComplaintButton = (TextView) findViewById(R.id.EditComplaintButton);
