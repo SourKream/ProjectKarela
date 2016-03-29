@@ -72,7 +72,8 @@
                     android:text="EDIT"
                     android:textSize="12sp"
                     android:layout_gravity="right"
-                    />
+                    android:visibility="gone" />
+
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -224,7 +225,7 @@
             android:gravity="start"
             android:paddingTop="7dp"
             android:id="@+id/complaint_is_resolving_user"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="match_parent"
