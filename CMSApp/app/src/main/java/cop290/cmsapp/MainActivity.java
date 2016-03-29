@@ -19,6 +19,7 @@ import android.view.MenuItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public static Typeface MyriadPro;
     private ViewPager viewPager;
     private FloatingActionButton fab;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
                             fab.setVisibility(View.VISIBLE);
                         else
                             fab.setVisibility(View.GONE);
+
+                    JSONObject data = new JSONObject(response.getString(0));
+                    Log.d("HERERERER", data.toString());
+                    if (data.getBoolean("new_notifs"))
+                        menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.ic_notifications_unread_white_24dp));
+                    else
+                        menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.ic_notifications_white_24dp));
+
                 } catch (JSONException e) {
                     Log.d("JsonException",e.getMessage());
                 }
@@ -172,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -220,11 +231,6 @@ public class MainActivity extends AppCompatActivity {
                                     complaintListInstitute.add(complaint);
                         }
                         ((ViewPagerAdapter) viewPager.getAdapter()).refreshFragments();
-                        if (((MyApplication) getApplication()).isUserLoggedIn())
-                            if (((MyApplication) getApplication()).getMyUser().UserType == 2)
-                                fab.setVisibility(View.VISIBLE);
-                            else
-                                fab.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         Log.d("JsonException", e.getMessage());
                     }
