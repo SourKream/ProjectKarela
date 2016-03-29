@@ -3,47 +3,38 @@ package cop290.cmsapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.Network;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import cop290.cmsapp.ComplaintListFragment.Complaint;
 
 public class ComplaintActivity extends AppCompatActivity {
 
+    // Data for the current activity
     private Complaint complaint;
     private List<Comment> commentList = new ArrayList<>();
     private Comment MyComment;
 
+    // Defining various buttons and views
     private ImageView AddCommentButton;
     private TextView EditCommentButton;
     private RelativeLayout NewCommentView;
@@ -54,7 +45,6 @@ public class ComplaintActivity extends AppCompatActivity {
     private LinearLayout MarkResovedButton;
     private CardView PokeButton;
     private TextView EditComplaintButton;
-
     private ImageView UpvoteButton;
     private ImageView DownvoteButton;
 
@@ -63,8 +53,10 @@ public class ComplaintActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint);
 
+        // Get complaint ID from Intent
         loadComplaint(getIntent().getIntExtra("ComplaintID", 0));
 
+        // Load all buttons and views
         NewCommentView = (RelativeLayout) findViewById(R.id.NewCommentView);
         MyCommentView = (LinearLayout) findViewById(R.id.MyCommentTextView);
         MyNameView = (TextView) findViewById(R.id.MyName);
@@ -72,21 +64,26 @@ public class ComplaintActivity extends AppCompatActivity {
         NewCommentEditText = (EditText) findViewById(R.id.NewCommentEditText);
         MarkResovedButton = (LinearLayout) findViewById(R.id.MarkResolvedButton);
 
+        // Set click listener for adding comment
         AddCommentButton = (ImageView) findViewById(R.id.NewCommentButton);
         AddCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 NewCommentView.setVisibility(View.GONE);
                 MyCommentView.setVisibility(View.VISIBLE);
+
                 if (MyComment==null)
                     MyComment = new Comment(NewCommentEditText.getText().toString(),((MyApplication) getApplication()).getMyUser().Name);
                 else {
                     MyComment.comment = NewCommentEditText.getText().toString();
                     MyComment.setCommenterName("You");
                 }
+
                 MyNameView.setText(MyComment.commenterName);
                 MyCommentTextView.setText(MyComment.comment);
 
+                // Send network request for posting new comment
                 JSONObject args1 = new JSONObject();
                 try {
                     args1 = new JSONObject("{vote: {comment: \"" + MyComment.comment + "\"}}");
@@ -117,7 +114,6 @@ public class ComplaintActivity extends AppCompatActivity {
         UpvoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (MyComment == null || MyComment.VoteType != -1) {
                     if (MyComment == null)
                         MyComment = new Comment("", "");
@@ -141,7 +137,6 @@ public class ComplaintActivity extends AppCompatActivity {
         DownvoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (MyComment == null || MyComment.VoteType != 1) {
                     if (MyComment == null)
                         MyComment = new Comment("", "");
@@ -202,6 +197,7 @@ public class ComplaintActivity extends AppCompatActivity {
         });
     }
 
+    // Send network request to update vote on server
     private void sendVoteToServer(){
         JSONObject args1 = new JSONObject();
         try {
@@ -218,6 +214,7 @@ public class ComplaintActivity extends AppCompatActivity {
         });
     }
 
+    // Change attributes for showing complaint as resolved
     private void markedResolved(){
         Toast.makeText(getBaseContext(), (complaint.isResolved)?"Marked Resolved":"Marked Unresolved", Toast.LENGTH_SHORT).show();
         ImageView resolved_tick = (ImageView) findViewById(R.id.resolved_tick);
@@ -225,9 +222,11 @@ public class ComplaintActivity extends AppCompatActivity {
         if (complaint.isResolved){
             resolved_tick.setImageResource(R.drawable.ic_done_green_24dp);
             resolved_text.setTextColor(getResources().getColor(R.color.emerald));
+            resolved_text.setText("Resolved");
         } else {
             resolved_tick.setImageResource(R.drawable.ic_done_black_24dp);
             resolved_text.setTextColor(getResources().getColor(R.color.textColour));
+            resolved_text.setText("Unresolved");
         }
     }
 
@@ -266,7 +265,7 @@ public class ComplaintActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.postingDateTextView)).setText(response.getString("created_at"));
                     String Admins = response.getString("admin_user_names");
                     Admins = Admins.subSequence(1,Admins.length()-1).toString();
-                    Admins = Admins.replace("\"","");
+                    Admins = Admins.replace("\"", "");
                     Admins = Admins.replace(",", ", ");
                     ((TextView) findViewById(R.id.posterTextView)).setText(Admins);
 
@@ -309,9 +308,11 @@ public class ComplaintActivity extends AppCompatActivity {
         if (complaint.isResolved){
             resolved_tick.setImageResource(R.drawable.ic_done_green_24dp);
             resolved_text.setTextColor(getResources().getColor(R.color.emerald));
+            resolved_text.setText("Resolved");
         } else {
             resolved_tick.setImageResource(R.drawable.ic_done_black_24dp);
             resolved_text.setTextColor(getResources().getColor(R.color.textColour));
+            resolved_text.setText("Unresolved");
         }
 
         if ((MyComment == null)||(MyComment.comment == null)||(MyComment.comment.equals(""))||(MyComment.comment.equals("null"))){

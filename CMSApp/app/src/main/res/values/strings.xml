@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CMSApp</string>
+    <string name="app_name">Shikāyatein</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_notification">Notifications</string>
