@@ -64,7 +64,7 @@ class ComplaintsController < ApplicationController
     else
       respond_to do |format|
         format.html {redirect_to login_path}
-        format.json {render json: {"success" => 0, "user" => user}}
+        format.json {render json: {"success" => 0}}
       end
     end
   end
@@ -102,12 +102,12 @@ class ComplaintsController < ApplicationController
       populate_resolved_notifications(params[:id].to_i)
       respond_to do |format|
         format.html {redirect_to complaints_path}
-        format.json {render json: {"success" => 1, "user" => user}}
+        format.json {render json: {"success" => 1}}
       end
     else
       respond_to do |format|
         format.html {redirect_to login_path}
-        format.json {render json: {"success" => 0, "user" => user}}
+        format.json {render json: {"success" => 0}}
       end
     end
   end

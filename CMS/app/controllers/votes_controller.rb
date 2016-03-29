@@ -54,7 +54,7 @@ class VotesController < ApplicationController
 		else
 	    respond_to do |format|
 		    format.html {redirect_to login_path}
-		    format.json {render json: {"success" => 0, "user" => user}}
+		    format.json {render json: {"success" => 0}}
 	    end
 	  end
   end
@@ -118,7 +118,7 @@ class VotesController < ApplicationController
 		else
 		    respond_to do |format|
 		       format.html {redirect_to login_path}
-		       format.json {render json: {"success" => 0, "user" => user}}
+		       format.json {render json: {"success" => 0}}
 	        end
 	    end
   	end
