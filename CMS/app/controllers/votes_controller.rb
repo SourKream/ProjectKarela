@@ -40,24 +40,23 @@ class VotesController < ApplicationController
 				    end
 			    end	
 			else
-		    respond_to do |format|
-		      if @vote.update_attributes(vote_params)
-		        format.html { redirect_to complaint_path, notice: 'Vote was successfully updated.' }
-		        format.json {render json: {"success" => 1}}
-		      else
-		        format.html { render :edit }
-		        format.json { render json: @vote.errors, status: :unprocessable_entity }
-		      end
-			  end
-	    end
-      
-		else
-	    respond_to do |format|
+			    respond_to do |format|
+				    if @vote.update_attributes(vote_params)
+				      format.html { redirect_to complaint_path, notice: 'Vote was successfully updated.' }
+				      format.json {render json: {"success" => 1}}
+				    else
+				      format.html { render :edit }
+				      format.json { render json: @vote.errors, status: :unprocessable_entity }
+				    end
+				end
+	    	end
+      	else
+	    	respond_to do |format|
 		    format.html {redirect_to login_path}
 		    format.json {render json: {"success" => 0}}
-	    end
-	  end
-  end
+	    	end
+	  	end
+  	end
 
 #POST /complaint/1/comment
 #POST /complaint/1/comment.json
