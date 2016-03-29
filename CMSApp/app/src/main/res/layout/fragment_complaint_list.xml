@@ -9,4 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <ImageView
+        android:id="@+id/emptyList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/nothing_here"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
 </FrameLayout>

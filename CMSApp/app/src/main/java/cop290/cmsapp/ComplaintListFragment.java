@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,11 +53,28 @@ public class ComplaintListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ComplaintActivity.class);
-                intent.putExtra("ComplaintID", ((Complaint)complaintListView.getAdapter().getItem(position)).ID);
+                intent.putExtra("ComplaintID", ((Complaint) complaintListView.getAdapter().getItem(position)).ID);
                 startActivity(intent);
             }
         });
+
+        if (complaintListView.getAdapter().getCount() == 0)
+            view.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
+        else
+            view.findViewById(R.id.emptyList).setVisibility(View.GONE);
+
         return view;
+    }
+
+    void checkEmptyness(){
+        ImageView emptyImage = null;
+        if (getView() != null)
+            emptyImage = (ImageView) getView().findViewById(R.id.emptyList);
+        if (emptyImage != null)
+            if (complaintListView.getAdapter().getCount() == 0)
+                emptyImage.findViewById(R.id.emptyList).setVisibility(View.VISIBLE);
+            else
+                emptyImage.findViewById(R.id.emptyList).setVisibility(View.GONE);
     }
 
     // Class to store details of a course
@@ -88,7 +106,12 @@ public class ComplaintListFragment extends Fragment {
                 Group = complaint.getString("group");
                 Title = complaint.getString("title");
                 Details = complaint.getString("details");
-                isResolved = complaint.getBoolean("is_resolved");
+
+                if (complaint.getString("is_resolved").equals("null"))
+                    isResolved = false;
+                else
+                    isResolved = complaint.getBoolean("is_resolved");
+
                 JSONArray action_users = complaint.getJSONArray("action_users");
                 for (int i=0; i<action_users.length(); i++)
                     ActionUsers.add(action_users.getInt(i));
@@ -156,6 +179,9 @@ public class ComplaintListFragment extends Fragment {
             //TextView complaintPostedBy      = (TextView) convertView.findViewById(R.id.complaintPostedBy);
 
             Complaint complaint = complaintList.get(position);
+
+            if (complaint.isResolved)
+                convertView.setBackgroundColor(getResources().getColor(R.color.notifHighlight));
 
             complaintSNo.setText(String.format("%d",position+1));
             complaintTitle.setText(complaint.Title);
