@@ -28,7 +28,8 @@ public class Networking {
             new String[] {"/complaints/",".json"},          //7
             new String[] {"/complaints/","/comment.json"},  //8
             new String[] {"/complaints/","/vote.json"},     //9
-            new String[] {"/notifs/","/mark_seen.json"}     //10
+            new String[] {"/notifs/","/mark_seen.json"},    //10
+            new String[] {"/complaints/","/mark_resolved.json"} //11
     };
 
     public interface VolleyCallback{
