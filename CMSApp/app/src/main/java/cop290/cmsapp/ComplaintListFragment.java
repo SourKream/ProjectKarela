@@ -16,9 +16,11 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -65,19 +67,50 @@ public class ComplaintListFragment extends Fragment {
         String Title;
         String Details;
         String Level;
+        Integer Upvotes = 0;
+        Integer Downvotes = 0;
+        List<Integer> ActionUsers = new ArrayList<>();
+        List<Integer> AdminUsers = new ArrayList<>();
+        List<Integer> ResolvingUsers = new ArrayList<>();
 
         // Constructor parses JSON string and stores data in object
-        public Complaint (String JsonString){
+        public Complaint (String JsonString, boolean withVotes){
+            JSONObject complaint = new JSONObject();
             try {
-                JSONObject complaint = new JSONObject(JsonString);
+                complaint = new JSONObject(JsonString);
+            } catch (JSONException e) {
+                Log.d("JSON Exception : ", e.getMessage());
+            }
+            try {
                 ID = complaint.getInt("id");
                 ComplaintTypeID = complaint.getInt("complaint_type_id");
                 Group = complaint.getString("group");
                 Title = complaint.getString("title");
                 Details = complaint.getString("details");
-                Level = complaint.getString("level");
+                JSONArray action_users = complaint.getJSONArray("action_users");
+                for (int i=0; i<action_users.length(); i++)
+                    ActionUsers.add(action_users.getInt(i));
+                JSONArray admin_users = complaint.getJSONArray("admin_users");
+                for (int i=0; i<admin_users.length(); i++)
+                    AdminUsers.add(admin_users.getInt(i));
+                JSONArray resolving_users = complaint.getJSONArray("resolving_users");
+                for (int i=0; i<resolving_users.length(); i++)
+                    ResolvingUsers.add(resolving_users.getInt(i));
+                try {
+                    Level = complaint.getString("level");
+                } catch (JSONException e) {
+                    Log.d("JSON Exception : ", e.getMessage());
+                }
             } catch (JSONException e) {
                 Log.d("JSON Exception : ", e.getMessage());
+            }
+            if (withVotes) {
+                try {
+                    Upvotes = complaint.getInt("upvotes");
+                    Downvotes = complaint.getInt("downvotes");
+                } catch (JSONException e) {
+                    Log.d("JSON Exception : ", e.getMessage());
+                }
             }
         }
     }
@@ -115,15 +148,18 @@ public class ComplaintListFragment extends Fragment {
             if (convertView == null)
                 convertView = inflater.inflate(R.layout.list_item_complaint, null);
 
-            TextView complaintTitle = (TextView) convertView.findViewById(R.id.complaintTitle);
-            TextView complaintDate = (TextView) convertView.findViewById(R.id.complaintDate);
+            TextView complaintSNo           = (TextView) convertView.findViewById(R.id.SNo);
+            TextView complaintTitle         = (TextView) convertView.findViewById(R.id.complaintTitle);
+            TextView complaintDescription   = (TextView) convertView.findViewById(R.id.complaintDescription);
+            //TextView complaintPostedBy      = (TextView) convertView.findViewById(R.id.complaintPostedBy);
 
             Complaint complaint = complaintList.get(position);
 
+            complaintSNo.setText(String.format("%d",position+1));
             complaintTitle.setText(complaint.Title);
-//            complaintTitle.setTypeface(MainActivity.MyriadPro);
-            complaintDate.setText(complaint.Details);
-//            complaintDate.setTypeface(MainActivity.Garibaldi);
+            complaintTitle.setTypeface(MainActivity.MyriadPro);
+            complaintDescription.setText(complaint.Details);
+            complaintDescription.setTypeface(MainActivity.Garibaldi);
 
             return convertView;
         }

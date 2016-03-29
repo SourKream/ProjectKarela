@@ -31,7 +31,8 @@ class ComplaintsController < ApplicationController
 
   # GET /complaints/1
   # GET /complaints/1.json
-  def show
+  def show    
+    @comments = Vote.where(complaint_id: params[:id]).where.not(comment: nil)
   end
 
   # GET /complaints/new
@@ -53,7 +54,7 @@ class ComplaintsController < ApplicationController
         if @complaint.save
           populate_new_edit_notifications(params, "new")
           format.html { redirect_to @complaint, notice: 'Complaint was successfully created.' }
-          format.json { render :show, status: :created, location: @complaint }
+          format.json {render json: {"success" => 1}}
         else
           format.html { render :new }
           format.json { render json: @complaint.errors, status: :unprocessable_entity }
@@ -75,7 +76,7 @@ class ComplaintsController < ApplicationController
       if @complaint.update(complaint_params)
         populate_new_edit_notifications(params, "edit")
         format.html { redirect_to @complaint, notice: 'Complaint was successfully updated.' }
-        format.json { render :show, status: :ok, location: @complaint }
+        format.json {render json: {"success" => 1}}
       else
         format.html { render :edit }
         format.json { render json: @complaint.errors, status: :unprocessable_entity }

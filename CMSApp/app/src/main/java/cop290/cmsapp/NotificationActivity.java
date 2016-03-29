@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -44,6 +46,27 @@ public class NotificationActivity extends AppCompatActivity {
                 goToComplaint(position);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_notification, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_mark_all_read){
+            for (int i=0; i<notifications.size(); i++)
+                notifications.get(i).markSeen();
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void getAllNotifications(){
@@ -89,7 +112,14 @@ public class NotificationActivity extends AppCompatActivity {
             }
         }
 
-        public void markSeen(){isSeen = true;}
+        public void markSeen(){
+            isSeen = true;
+            String args[] = {Integer.toString(NotificationID)};
+            Networking.getRequest(10, args, new Networking.VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {}
+            });
+        }
     }
 
     // Custom adapter to populate list view
@@ -130,6 +160,7 @@ public class NotificationActivity extends AppCompatActivity {
             Notification notification = notificationsList.get(position);
 
             notificationDescription.setText(notification.Details);
+
             if (!notificationsList.get(position).isSeen)
                 convertView.setBackgroundColor(getResources().getColor(R.color.notifHighlight));
 

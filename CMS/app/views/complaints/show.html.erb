@@ -40,7 +40,37 @@
   <%= @complaint.resolving_users %>
 </p>
 
+<p>
+  <strong>Upvotes:</strong>
+  <%= Vote.where(complaint_id: @complaint.id, vote_type: 1).length %>
+</p>
+
+<p>
+  <strong>Downvotes:</strong>
+  <%= Vote.where(complaint_id: @complaint.id, vote_type: -1).length %>
+</p>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>User </th>
+      <th>Last Updated</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @comments.each do |comment| %>
+      <tr>
+        <td><%= User.find(comment.user_id).name %></td>
+        <td><%= comment.updated_at %></td>
+        <td><%= comment.comment %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
 <%= link_to 'Edit', edit_complaint_path(@complaint) %> |
-<%= link_to 'Vote', votes_path(@complaint) %>|
-<%= link_to 'Comment', comments_path(@complaint) %>|
+<%= link_to 'Vote', votes_path(@complaint) %> |
+<%= link_to 'Comment', comments_path(@complaint) %> |
 <%= link_to 'Back', complaints_path %>
