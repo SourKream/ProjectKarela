@@ -106,4 +106,9 @@ module ComplaintsHelper
     
     params[:complaint][:admin_users].push(current_user.id)
   end  
+  
+  def is_pokable(id)    #snair
+    (Time.now - Complaint.find(id).updated_at.to_time) > 60
+  end
+  
 end
