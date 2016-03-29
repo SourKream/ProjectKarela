@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
   get   'complaints/:id/poke'         => 'notifications#poke'
 
-
+  get   'clear'   => 'application#clear'
   
   
   # The priority is based upon order of creation: first created -> highest priority.
