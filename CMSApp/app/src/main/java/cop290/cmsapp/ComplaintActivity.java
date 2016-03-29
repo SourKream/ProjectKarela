@@ -121,7 +121,7 @@ public class ComplaintActivity extends AppCompatActivity {
                     if (MyComment.VoteType == 1) {
                         MyComment.VoteType = 0;
                         complaint.Upvotes = complaint.Upvotes - 1;
-                        UpvoteButton.setAlpha((float)0.7);
+                        UpvoteButton.setAlpha((float)0.4);
                     } else {
                         MyComment.VoteType = 1;
                         complaint.Upvotes = complaint.Upvotes + 1;
@@ -145,7 +145,7 @@ public class ComplaintActivity extends AppCompatActivity {
                     if (MyComment.VoteType == -1) {
                         MyComment.VoteType = 0;
                         complaint.Downvotes = complaint.Downvotes - 1;
-                        DownvoteButton.setAlpha((float)0.7);
+                        DownvoteButton.setAlpha((float)0.4);
                     } else {
                         MyComment.VoteType = -1;
                         complaint.Downvotes = complaint.Downvotes + 1;

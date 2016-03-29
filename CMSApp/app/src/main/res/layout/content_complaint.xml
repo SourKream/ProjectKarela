@@ -146,7 +146,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:alpha="0.7"
+                            android:alpha="0.4"
                             android:id="@+id/upvoteButton"
                             android:src="@drawable/ic_thumb_up_black_36dp"/>
 
@@ -170,7 +170,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:alpha="0.7"
+                            android:alpha="0.4"
                             android:id="@+id/downvoteButton"
                             android:src="@drawable/ic_thumb_down_black_36dp"/>
 
